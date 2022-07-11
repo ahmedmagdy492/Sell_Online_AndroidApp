@@ -29,6 +29,22 @@ public class HttpClient {
         url = Uri.parse(context.getString(R.string.api_url));
     }
 
+    public String getRequest(String url_path) throws IOException, UnAuthorizedException {
+        Uri.Builder builder = url.buildUpon();
+        builder.appendEncodedPath(url_path);
+        HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(builder.toString())
+                .openConnection();
+        httpURLConnection.setRequestProperty("Authorization", "Bearer " +
+                _sharedPreferences.getString("token", ""));
+        httpURLConnection.setRequestMethod("GET");
+        httpURLConnection.connect();
+
+        if(httpURLConnection.getResponseCode() == 401)
+            throw new UnAuthorizedException("UnAuthorize");
+
+        return readFromInputStream(httpURLConnection.getInputStream());
+    }
+
     public String postRequest(String url_path, String data) throws IOException, UnAuthorizedException {
         Uri.Builder builder = url.buildUpon();
         builder.appendEncodedPath(url_path);

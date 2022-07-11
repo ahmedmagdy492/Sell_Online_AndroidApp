@@ -14,9 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SellOnline"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".HomeActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

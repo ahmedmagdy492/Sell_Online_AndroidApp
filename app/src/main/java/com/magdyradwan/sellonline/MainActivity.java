@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,7 @@ import com.magdyradwan.sellonline.responsemodels.LoginResponseModel;
 import org.json.JSONException;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -40,6 +42,21 @@ public class MainActivity extends AppCompatActivity {
         password = findViewById(R.id.txt_password);
     }
 
+    private boolean checkForTokenValidity() throws IOException {
+        try {
+            HttpClient httpClient = new HttpClient(getApplicationContext(), getSharedPreferences(
+                    getString(R.string.preference_key),
+                    MODE_PRIVATE
+            ));
+
+            httpClient.getRequest("Auth/IsValid");
+            return true;
+        }
+        catch (UnAuthorizedException e) {
+            return false;
+        }
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +72,28 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             return;
         }
+
+        String token = getData("token");
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        service.execute(() -> {
+            try {
+                boolean result = checkForTokenValidity();
+
+                if(!token.equals("") && result) {
+                    // token is valid
+                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    mHandler.post(() -> {
+                        RelativeLayout relativeLayout = findViewById(R.id.loader_overlay);
+                        relativeLayout.setVisibility(View.GONE);
+                    });
+                }
+            } catch (IOException e) {
+                Log.e(TAG, "onCreate: when checking the validity of the token", e);
+            }
+        });
 
         btnLogin.setOnClickListener(v -> {
             LoginViewModel model = new LoginViewModel(email.getText().toString(),

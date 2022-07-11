@@ -3,8 +3,13 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/drawable/borders.xml" value="0.1645" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_home.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_main.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_splash.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/fragment_profile.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/profile_option_item.xml" value="0.20878623188405798" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/xml/network_security_config.xml" value="0.20878623188405798" />
       </map>
     </option>
   </component>
@@ -13,5 +18,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.21666666666666667" />
+      </ProjectState>
+    </option>
   </component>
 </project>

@@ -6,6 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@color/purple_700"
+        android:id="@+id/loader_overlay"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
         <ScrollView
             android:layout_width="match_parent"
             android:layout_centerInParent="true"
