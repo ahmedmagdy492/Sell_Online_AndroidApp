@@ -9,7 +9,16 @@ public class ProfileResponseModel {
     private String city;
     private String district;
     private String userId;
+    private String profileImageURL;
     private ArrayList<PhoneNumberResponseModel> phoneNumbers;
+
+    public String getProfileImageURL() {
+        return profileImageURL;
+    }
+
+    public void setProfileImageURL(String profileImageURL) {
+        this.profileImageURL = profileImageURL;
+    }
 
     public String getDisplayName() {
         return displayName;

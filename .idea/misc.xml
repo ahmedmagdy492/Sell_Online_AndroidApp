@@ -4,11 +4,29 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/drawable/borders.xml" value="0.1645" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/drawable/circular_borders.xml" value="0.1645" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/drawable/ic_baseline_format_list_bulleted_24.xml" value="0.1645" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/drawable/ic_baseline_save_24.xml" value="0.1645" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/drawable/tag_item.xml" value="0.1645" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_create_post.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_edit_post.xml" value="0.20878623188405798" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_home.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_main.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_notifications.xml" value="0.20878623188405798" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_post_details.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_splash.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/fragment_my_posts.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/fragment_notifications.xml" value="0.20878623188405798" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/fragment_posts.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/fragment_profile.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/image_upload_item.xml" value="0.48221757322175735" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/my_post_item.xml" value="0.20878623188405798" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/notification_item.xml" value="0.20878623188405798" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/post_item.xml" value="0.20878623188405798" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/profile_option_item.xml" value="0.20878623188405798" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/spinner_item.xml" value="0.20878623188405798" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/menu/bottom_navigation_menu.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/menu/home_menu.xml" value="0.215625" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/xml/network_security_config.xml" value="0.20878623188405798" />
       </map>
     </option>

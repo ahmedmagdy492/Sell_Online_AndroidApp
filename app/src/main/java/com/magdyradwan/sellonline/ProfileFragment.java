@@ -103,25 +103,7 @@ public class ProfileFragment extends Fragment {
             data.add(new ProfileOptionDTO("Phone Number " + (i+1), phoneNumbers.get(i), false));
         }
 
-        data.add(new ProfileOptionDTO("Log out", "", true));
-
         listView.setAdapter(new ProfileAdapter(getActivity(), R.layout.profile_option_item, data));
-
-        listView.setOnItemClickListener((parent, view, position, id) -> {
-            if(view.getTag() == "button") {
-                SharedPreferences sharedPreferences = getActivity().getSharedPreferences(getString(R.string.preference_key),
-                        Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString("token", "");
-                editor.apply();
-
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
-            }
-            else {
-
-            }
-        });
 
         return inflatedView;
     }

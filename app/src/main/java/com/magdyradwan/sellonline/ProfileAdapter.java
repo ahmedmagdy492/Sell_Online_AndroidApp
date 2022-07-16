@@ -1,6 +1,8 @@
 package com.magdyradwan.sellonline;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,14 +40,7 @@ public class ProfileAdapter extends ArrayAdapter<ProfileOptionDTO> {
         TextView optionName = convertView.findViewById(R.id.option_name);
         TextView title = convertView.findViewById(R.id.txt_title);
         title.setText(current.getTitle());
-        if(!current.isButton()) {
-            optionName.setText(current.getItemName());
-        }
-        else {
-            convertView.setTag("button");
-            title.setTextColor(Color.BLACK);
-            title.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-        }
+        optionName.setText(current.getItemName());
         return convertView;
     }
 

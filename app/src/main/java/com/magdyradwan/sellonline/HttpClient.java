@@ -40,7 +40,7 @@ public class HttpClient {
         httpURLConnection.connect();
 
         if(httpURLConnection.getResponseCode() == 401)
-            throw new UnAuthorizedException("UnAuthorize");
+            throw new UnAuthorizedException("UnAuthorized");
 
         return readFromInputStream(httpURLConnection.getInputStream());
     }
@@ -76,7 +76,7 @@ public class HttpClient {
             throw new UnAuthorizedException("Invalid Email or Password");
         }
 
-        if(httpURLConnection.getResponseCode() != 200) {
+        if(!String.valueOf(httpURLConnection.getResponseCode()).startsWith("2")) {
             String response = readFromInputStream(httpURLConnection.getInputStream());
             Log.d("HttpClient", "postRequest: " + response);
             throw new IOException(response);

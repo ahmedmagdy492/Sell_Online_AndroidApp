@@ -4,10 +4,26 @@
     <string name="password">Password</string>
     <string name="login">Login</string>
     <string name="loading">Loading…</string>
+    <string name="viewed_by">Viewed By </string>
+    <string name="add">Add</string>
+    <string name="my_posts">My Posts</string>
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="log_out">Log out</string>
+    <string name="about">About</string>
+    <string name="change_password">Change Password</string>
+    <string name="share">Share</string>
+    <string name="create_post">Create New Post</string>
+    <string name="post_title">Post Title</string>
+    <string name="post_content">Post Content</string>
+    <string name="upload_image">Upload Image</string>
+    <string name="notifications">Notifications</string>
+    <string name="no_new_notifications">No New Notifications</string>
 
     <string name="preference_key" translatable="false">sell_online_store</string>
     <string name="api_url" translatable="false">http://192.168.1.2:5000/v1/</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit">Edit</string>
     <!--    <string name="api_url" translatable="false">http://localhost:7283/v1/</string>-->
 </resources>

@@ -129,6 +129,7 @@ public class MainActivity extends AppCompatActivity {
                             // goto to the next activity
                             Intent intent = new Intent(this, HomeActivity.class);
                             startActivity(intent);
+                            mHandler.post(() -> finish());
                         }
 
                     }
@@ -149,6 +150,12 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finishAffinity();
     }
 
     private boolean validateInput(LoginViewModel loginViewModel) {
