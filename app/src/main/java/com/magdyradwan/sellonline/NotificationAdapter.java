@@ -40,6 +40,9 @@ public class NotificationAdapter extends ArrayAdapter<NotificationResponseModel>
         TextView content = convertView.findViewById(R.id.noti_content);
         content.setText(responseModel.getContent());
 
+        TextView date = convertView.findViewById(R.id.noti_create_date);
+        date.setText(responseModel.getNotificationDate());
+
         return convertView;
     }
 

@@ -50,7 +50,7 @@ public class MyPostsAdapter extends RecyclerView.Adapter<MyPostsAdapter.MyPostsV
         }
 
         holder.btnEdit.setOnClickListener(v -> {
-            Intent intent = new Intent(context, PostDetailsActivity.class);
+            Intent intent = new Intent(context, PostEditActivity.class);
             intent.putExtra("post_id", post.getPostID());
             context.startActivity(intent);
         });

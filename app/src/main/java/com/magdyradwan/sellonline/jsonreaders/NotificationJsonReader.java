@@ -22,7 +22,7 @@ public class NotificationJsonReader implements IJsonReader<List<NotificationResp
                     obj.getString("notificationID"),
                     obj.getString("title"),
                     obj.getString("content"),
-                    obj.getString("UserID"),
+                    obj.getString("userID"),
                     obj.getString("notificationDate")
             );
             notifications.add(notificationResponseModel);

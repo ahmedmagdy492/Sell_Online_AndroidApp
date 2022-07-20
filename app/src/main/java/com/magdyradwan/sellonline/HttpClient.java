@@ -45,6 +45,22 @@ public class HttpClient {
         return readFromInputStream(httpURLConnection.getInputStream());
     }
 
+    public String deleteRequest(String url_path) throws IOException, UnAuthorizedException {
+        Uri.Builder builder = url.buildUpon();
+        builder.appendEncodedPath(url_path);
+        HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(builder.toString())
+                .openConnection();
+        httpURLConnection.setRequestProperty("Authorization", "Bearer " +
+                _sharedPreferences.getString("token", ""));
+        httpURLConnection.setRequestMethod("DELETE");
+        httpURLConnection.connect();
+
+        if(httpURLConnection.getResponseCode() == 401)
+            throw new UnAuthorizedException("UnAuthorized");
+
+        return readFromInputStream(httpURLConnection.getInputStream());
+    }
+
     public String postRequest(String url_path, String data) throws IOException, UnAuthorizedException {
         Uri.Builder builder = url.buildUpon();
         builder.appendEncodedPath(url_path);
@@ -53,6 +69,46 @@ public class HttpClient {
 
         httpURLConnection.setDoOutput(true);
         httpURLConnection.setRequestMethod("POST");
+        httpURLConnection.setRequestProperty("Content-Type", "application/json");
+        if(_sharedPreferences.contains("token"))
+        {
+            httpURLConnection.setRequestProperty("Authorization", "Bearer "
+                    + _sharedPreferences.getString("token", ""));
+        }
+
+        OutputStreamWriter out = new OutputStreamWriter(httpURLConnection.getOutputStream());
+        out.write(data);
+        out.flush();
+        out.close();
+
+        Log.d("HttpClient", "post body: ");
+
+        httpURLConnection.connect();
+
+        Log.d("HttpClient", "after connection: " +
+                httpURLConnection.getResponseCode());
+
+        if(httpURLConnection.getResponseCode() == 401) {
+            throw new UnAuthorizedException("Invalid Email or Password");
+        }
+
+        if(!String.valueOf(httpURLConnection.getResponseCode()).startsWith("2")) {
+            String response = readFromInputStream(httpURLConnection.getInputStream());
+            Log.d("HttpClient", "postRequest: " + response);
+            throw new IOException(response);
+        }
+
+        return readFromInputStream(httpURLConnection.getInputStream());
+    }
+
+    public String patchRequest(String url_path, String data) throws IOException, UnAuthorizedException {
+        Uri.Builder builder = url.buildUpon();
+        builder.appendEncodedPath(url_path);
+        HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(builder.toString())
+                .openConnection();
+
+        httpURLConnection.setDoOutput(true);
+        httpURLConnection.setRequestMethod("PATCH");
         httpURLConnection.setRequestProperty("Content-Type", "application/json");
         if(_sharedPreferences.contains("token"))
         {

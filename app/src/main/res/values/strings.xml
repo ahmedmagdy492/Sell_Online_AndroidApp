@@ -19,6 +19,7 @@
     <string name="upload_image">Upload Image</string>
     <string name="notifications">Notifications</string>
     <string name="no_new_notifications">No New Notifications</string>
+    <string name="edit_post">Edit Post</string>
 
     <string name="preference_key" translatable="false">sell_online_store</string>
     <string name="api_url" translatable="false">http://192.168.1.2:5000/v1/</string>

@@ -16,10 +16,18 @@
         tools:text="@string/hello_blank_fragment" />
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/noti_create_date"
+        tools:text="Mon 12 April 2022"
+        android:layout_marginStart="16dp"
+        />
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textColor="@color/black"
-        android:layout_margin="10dp"
+        android:layout_margin="16dp"
         android:textSize="18sp"
         android:id="@+id/noti_content"
         tools:text="@string/hello_blank_fragment" />

@@ -4,6 +4,7 @@
     package="com.magdyradwan.sellonline">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,8 +18,14 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".PostEditActivity"
+            android:parentActivityName=".HomeActivity"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
+            android:exported="false" />
+        <activity
             android:name=".NotificationsActivity"
             android:exported="false"
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:parentActivityName=".HomeActivity" />
         <activity
             android:name=".CreatePostActivity"
@@ -34,6 +41,7 @@
             android:exported="false"
             android:theme="@style/Theme.AppCompat.Light.DarkActionBar" />
         <activity
+            android:theme="@style/Theme.AppCompat.Light.DarkActionBar"
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -223,15 +223,6 @@ public class CreatePostActivity extends AppCompatActivity {
         });
 
         btnUploadImage.setOnClickListener(v -> {
-//            Intent galleryIntent = new Intent();
-//            galleryIntent.setType("image/*");
-//            galleryIntent.setAction(Intent.ACTION_GET_CONTENT);
-//
-//            Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//
-//            Intent chooser = Intent.createChooser(galleryIntent, "Choose Image");
-//            chooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { photoIntent });
-
             mGetContent.launch("image/*");
         });
     }

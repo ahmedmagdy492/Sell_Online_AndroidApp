@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -26,6 +27,8 @@ import java.util.concurrent.Executors;
 
 public class NotificationsActivity extends AppCompatActivity {
 
+    private static final String TAG = "NotificationsActivity";
+
     private SharedPreferences sharedPreferences;
     private ProgressBar noti_loader;
 
@@ -35,6 +38,7 @@ public class NotificationsActivity extends AppCompatActivity {
         );
 
         String response = httpClient.getRequest("Notification");
+        Log.d(TAG, "getMyNotifications: response " + response);
         NotificationJsonReader notificationJsonReader = new NotificationJsonReader();
         return notificationJsonReader.ReadJson(response);
     }
