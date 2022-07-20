@@ -2,8 +2,10 @@ package com.magdyradwan.sellonline;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +15,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +27,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.magdyradwan.sellonline.dto.ImageUploadDTO;
+import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.helpers.Base64Converter;
 import com.magdyradwan.sellonline.helpers.FileReaderHelper;
@@ -50,7 +55,7 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class PostEditActivity extends AppCompatActivity {
+public class PostEditActivity extends AppCompatActivity implements WarningDialogFragment.WarningDialogEvent {
 
     private static final String TAG = "PostEditActivity";
     private String postID;
@@ -60,14 +65,12 @@ public class PostEditActivity extends AppCompatActivity {
     private Spinner categoryList;
     private FloatingActionButton btnSave;
     private GridView gridView;
-    private Button btnUploadImage;
 
     private void initViews() {
         title = findViewById(R.id.post_title_create);
         content = findViewById(R.id.post_content_create);
         categoryList = findViewById(R.id.post_edit_spinner);
         btnSave = findViewById(R.id.save_post);
-        btnUploadImage = findViewById(R.id.upload_image);
 
         gridView = findViewById(R.id.images_layout_2);
 
@@ -90,7 +93,7 @@ public class PostEditActivity extends AppCompatActivity {
         return true;
     }
 
-    private PostResponseModel getPostByID() throws IOException, UnAuthorizedException, JSONException {
+    private PostResponseModel getPostByID() throws IOException, UnAuthorizedException, JSONException, NoInternetException {
         HttpClient httpClient = new HttpClient(
                 PostEditActivity.this,
                 getSharedPreferences(getString(R.string.preference_key),
@@ -103,7 +106,7 @@ public class PostEditActivity extends AppCompatActivity {
     }
 
 
-    private ArrayList<PostCategory> getCategoryList() throws IOException, UnAuthorizedException, JSONException {
+    private ArrayList<PostCategory> getCategoryList() throws IOException, UnAuthorizedException, JSONException, NoInternetException {
         HttpClient httpClient = new HttpClient(this, getSharedPreferences(
                 getString(R.string.preference_key),
                 MODE_PRIVATE
@@ -114,7 +117,7 @@ public class PostEditActivity extends AppCompatActivity {
         return categoryListJsonReader.ReadJson(response);
     }
 
-    private ArrayList<PostImageResponseModel> getImagesOfPost(String postID) throws IOException, UnAuthorizedException, JSONException {
+    private ArrayList<PostImageResponseModel> getImagesOfPost(String postID) throws IOException, UnAuthorizedException, JSONException, NoInternetException {
         HttpClient httpClient = new HttpClient(
                 PostEditActivity.this,
                 getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
@@ -124,7 +127,7 @@ public class PostEditActivity extends AppCompatActivity {
         return postImageJSONReader.ReadJson(response);
     }
 
-    private boolean editPost() throws IOException, UnAuthorizedException, JSONException {
+    private boolean editPost() throws IOException, UnAuthorizedException, JSONException, NoInternetException {
         TextView categoryId = categoryList.getSelectedView().findViewById(R.id.category_id_spinner);
         EditPostModel postModel = new EditPostModel(
                 postID,
@@ -174,6 +177,11 @@ public class PostEditActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+            } catch (NoInternetException e) {
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(PostEditActivity.this, NoInternetActivity.class);
+                    startActivity(intent);
+                });
             }
         });
 
@@ -192,6 +200,11 @@ public class PostEditActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     Toast.makeText(PostEditActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     btnSave.setEnabled(true);
+                });
+            } catch (NoInternetException e) {
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(PostEditActivity.this, NoInternetActivity.class);
+                    startActivity(intent);
                 });
             }
         });
@@ -216,6 +229,11 @@ public class PostEditActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+            } catch (NoInternetException e) {
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(PostEditActivity.this, NoInternetActivity.class);
+                    startActivity(intent);
+                });
             }
         });
 
@@ -234,8 +252,30 @@ public class PostEditActivity extends AppCompatActivity {
             } catch (IOException | UnAuthorizedException | JSONException e) {
                 runOnUiThread(() -> Toast.makeText(PostEditActivity.this,
                         e.getMessage(), Toast.LENGTH_SHORT).show());
+            } catch (NoInternetException e) {
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(PostEditActivity.this, NoInternetActivity.class);
+                    startActivity(intent);
+                });
             }
         }));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.post_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if(item.getItemId() == R.id.delete_post) {
+            // show some alert to warn him
+            WarningDialogFragment warningDialogFragment =
+                    WarningDialogFragment.newInstance("Are you sure you want to delete the post you won't be able to undo this action ?");
+            warningDialogFragment.show(getSupportFragmentManager(), "delete post");
+        }
+        return true;
     }
 
     private Uri getImageUri(Context inContext, Bitmap inImage) {
@@ -243,5 +283,42 @@ public class PostEditActivity extends AppCompatActivity {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
+    }
+
+    @Override
+    public void onDialogPositiveAction(DialogFragment fragment) {
+        positiveAction();
+    }
+
+    private boolean deletePost(String postID) throws IOException, NoInternetException, UnAuthorizedException {
+        HttpClient httpClient = new HttpClient(PostEditActivity.this,
+                getSharedPreferences(getString(R.string.preference_key), Context.MODE_PRIVATE));
+
+        httpClient.deleteRequest("Posts/Delete?postId=" + postID);
+        return true;
+    }
+
+    private void positiveAction() {
+        Executors.newSingleThreadExecutor().execute(() -> {
+            try {
+                boolean result = deletePost(postID);
+                if(result) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(PostEditActivity.this, "Post has been delete successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    });
+                }
+            }
+            catch (IOException | UnAuthorizedException e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(PostEditActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            } catch (NoInternetException e) {
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(PostEditActivity.this, NoInternetActivity.class);
+                    startActivity(intent);
+                });
+            }
+        });
     }
 }

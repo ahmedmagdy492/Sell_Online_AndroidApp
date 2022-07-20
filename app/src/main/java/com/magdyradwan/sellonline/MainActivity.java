@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -14,7 +16,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
+import com.magdyradwan.sellonline.helpers.NetworkConnectionChecker;
 import com.magdyradwan.sellonline.jsonreaders.LoginJsonReader;
 import com.magdyradwan.sellonline.responsemodels.LoginResponseModel;
 
@@ -54,6 +58,12 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (UnAuthorizedException e) {
             return false;
+        } catch (NoInternetException e) {
+            runOnUiThread(() -> {
+                Intent intent = new Intent(MainActivity.this, NoInternetActivity.class);
+                startActivity(intent);
+            });
+            return false;
         }
     }
 
@@ -63,6 +73,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         initViews();
 
+        NetworkConnectionChecker networkConnectionChecker = new NetworkConnectionChecker();
+        if(!networkConnectionChecker.isNetworkAvailable(getApplicationContext())) {
+            Intent intent = new Intent(this, NoInternetActivity.class);
+            startActivity(intent);
+            return;
+        }
+
         mHandler = new Handler(getMainLooper());
         try {
             httpClient = new HttpClient(getApplicationContext(),
@@ -70,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
         }
         catch (IOException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            return;
+        } catch (NoInternetException e) {
+            runOnUiThread(() -> {
+                Intent intent = new Intent(MainActivity.this, NoInternetActivity.class);
+                startActivity(intent);
+            });
             return;
         }
 

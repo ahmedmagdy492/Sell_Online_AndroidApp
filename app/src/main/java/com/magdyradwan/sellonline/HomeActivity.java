@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
+import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.jsonreaders.ProfileJsonReader;
 import com.magdyradwan.sellonline.responsemodels.NotificationResponseModel;
@@ -84,6 +85,11 @@ public class HomeActivity extends AppCompatActivity {
                     catch (IOException | UnAuthorizedException | JSONException e) {
                         e.printStackTrace();
                         Log.e(TAG, "onLoad: " + e.getMessage(), e);
+                    } catch (NoInternetException e) {
+                        runOnUiThread(() -> {
+                            Intent intent = new Intent(HomeActivity.this, NoInternetActivity.class);
+                            startActivity(intent);
+                        });
                     }
                 });
             }
@@ -129,6 +135,10 @@ public class HomeActivity extends AppCompatActivity {
         }
         else if (item.getItemId() == R.id.notifications) {
             Intent intent = new Intent(this, NotificationsActivity.class);
+            startActivity(intent);
+        }
+        else if(item.getItemId() == R.id.change_password) {
+            Intent intent = new Intent(this, ChangePasswordActivity.class);
             startActivity(intent);
         }
         return true;

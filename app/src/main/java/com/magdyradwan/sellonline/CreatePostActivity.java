@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.magdyradwan.sellonline.dto.ImageUploadDTO;
+import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.helpers.Base64Converter;
 import com.magdyradwan.sellonline.helpers.FileReaderHelper;
@@ -88,7 +89,7 @@ public class CreatePostActivity extends AppCompatActivity {
         btnSave.setEnabled(false);
     }
 
-    private ArrayList<PostCategory> getCategoryList() throws IOException, UnAuthorizedException, JSONException {
+    private ArrayList<PostCategory> getCategoryList() throws IOException, UnAuthorizedException, JSONException, NoInternetException {
         HttpClient httpClient = new HttpClient(this, getSharedPreferences(
                 getString(R.string.preference_key),
                 MODE_PRIVATE
@@ -99,7 +100,7 @@ public class CreatePostActivity extends AppCompatActivity {
         return categoryListJsonReader.ReadJson(response);
     }
 
-    private String createPost() throws IOException, UnAuthorizedException, JSONException {
+    private String createPost() throws IOException, UnAuthorizedException, JSONException, NoInternetException {
         TextView categoryId = categoryList.getSelectedView().findViewById(R.id.category_id_spinner);
         CreatePostModel postModel = new CreatePostModel(
                 title.getText().toString(),
@@ -116,7 +117,7 @@ public class CreatePostActivity extends AppCompatActivity {
         return createPostJsonReader.ReadJson(response).getPostID();
     }
 
-    private boolean uploadImagesToPost(UploadImageModel model) throws IOException, UnAuthorizedException {
+    private boolean uploadImagesToPost(UploadImageModel model) throws IOException, UnAuthorizedException, NoInternetException {
         HttpClient httpClient = new HttpClient(CreatePostActivity.this,
                 getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
 
@@ -169,6 +170,11 @@ public class CreatePostActivity extends AppCompatActivity {
                     Toast.makeText(CreatePostActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     btnSave.setEnabled(true);
                 });
+            } catch (NoInternetException e) {
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(CreatePostActivity.this, NoInternetActivity.class);
+                    startActivity(intent);
+                });
             }
         });
 
@@ -216,6 +222,11 @@ public class CreatePostActivity extends AppCompatActivity {
                         Log.d(TAG, "onCreate: exceptions: " + e.getMessage());
                         runOnUiThread(() -> {
                             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        });
+                    } catch (NoInternetException e) {
+                        runOnUiThread(() -> {
+                            Intent intent = new Intent(CreatePostActivity.this, NoInternetActivity.class);
+                            startActivity(intent);
                         });
                     }
                 });

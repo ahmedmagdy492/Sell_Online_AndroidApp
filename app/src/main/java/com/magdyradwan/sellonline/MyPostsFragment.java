@@ -1,6 +1,7 @@
 package com.magdyradwan.sellonline;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -14,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.jsonreaders.PostsJsonReader;
 import com.magdyradwan.sellonline.responsemodels.PostResponseModel;
@@ -70,6 +72,11 @@ public class MyPostsFragment extends Fragment {
                 getActivity().runOnUiThread(() -> {
                     Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
                     loader.setVisibility(View.GONE);
+                });
+            } catch (NoInternetException e) {
+                getActivity().runOnUiThread(() -> {
+                    Intent intent = new Intent(getActivity(), NoInternetActivity.class);
+                    startActivity(intent);
                 });
             }
         });

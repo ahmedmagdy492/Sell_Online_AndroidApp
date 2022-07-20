@@ -5,7 +5,9 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
+import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
+import com.magdyradwan.sellonline.helpers.NetworkConnectionChecker;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,9 +26,14 @@ public class HttpClient {
     private final Uri url;
 
     public HttpClient(Context context, SharedPreferences sharedPreferences)
-            throws MalformedURLException {
+            throws MalformedURLException, NoInternetException {
         _sharedPreferences = sharedPreferences;
         url = Uri.parse(context.getString(R.string.api_url));
+
+        NetworkConnectionChecker networkConnectionChecker = new NetworkConnectionChecker();
+        if(!networkConnectionChecker.isNetworkAvailable(context)) {
+            throw new NoInternetException("No Internet Connection");
+        }
     }
 
     public String getRequest(String url_path) throws IOException, UnAuthorizedException {

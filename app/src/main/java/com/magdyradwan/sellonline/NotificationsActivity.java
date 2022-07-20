@@ -4,6 +4,7 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.jsonreaders.NotificationJsonReader;
 import com.magdyradwan.sellonline.responsemodels.NotificationResponseModel;
@@ -32,7 +34,7 @@ public class NotificationsActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private ProgressBar noti_loader;
 
-    private List<NotificationResponseModel> getMyNotifications () throws IOException, UnAuthorizedException, JSONException {
+    private List<NotificationResponseModel> getMyNotifications () throws IOException, UnAuthorizedException, JSONException, NoInternetException {
         HttpClient httpClient = new HttpClient(NotificationsActivity.this,
                 sharedPreferences
         );
@@ -82,6 +84,11 @@ public class NotificationsActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     noti_loader.setVisibility(View.GONE);
+                });
+            } catch (NoInternetException e) {
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(NotificationsActivity.this, NoInternetActivity.class);
+                    startActivity(intent);
                 });
             }
         });

@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.magdyradwan.sellonline.dto.ImageUploadDTO;
+import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.helpers.Base64Converter;
 import com.magdyradwan.sellonline.jsonreaders.PostDetailsJsonReader;
@@ -39,7 +41,7 @@ public class PostDetailsActivity extends AppCompatActivity {
     private static final String TAG = "PostDetailsActivity";
     private GridView images_list;
 
-    private PostResponseModel getPostDetails(String postId) throws IOException, UnAuthorizedException, JSONException {
+    private PostResponseModel getPostDetails(String postId) throws IOException, UnAuthorizedException, JSONException, NoInternetException {
         HttpClient httpClient = new HttpClient(this, getSharedPreferences(
                 getString(R.string.preference_key),
                 MODE_PRIVATE
@@ -50,7 +52,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         return postsJsonReader.ReadJson(response).get(0);
     }
 
-    private void addViewToPost(String postId) throws IOException, UnAuthorizedException {
+    private void addViewToPost(String postId) throws IOException, UnAuthorizedException, NoInternetException {
         HttpClient httpClient = new HttpClient(this, getSharedPreferences(
                 getString(R.string.preference_key),
                 MODE_PRIVATE
@@ -59,7 +61,7 @@ public class PostDetailsActivity extends AppCompatActivity {
         httpClient.postRequest("Posts/Views/Add?postId=" + postId, "");
     }
 
-    private ArrayList<PostImageResponseModel> getImagesOfPost(String postID) throws IOException, UnAuthorizedException, JSONException {
+    private ArrayList<PostImageResponseModel> getImagesOfPost(String postID) throws IOException, UnAuthorizedException, JSONException, NoInternetException {
         HttpClient httpClient = new HttpClient(
                 PostDetailsActivity.this,
                 getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
@@ -97,6 +99,11 @@ public class PostDetailsActivity extends AppCompatActivity {
                     runOnUiThread(() -> {
                         Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                     });
+                } catch (NoInternetException e) {
+                    runOnUiThread(() -> {
+                        Intent intent = new Intent(PostDetailsActivity.this, NoInternetActivity.class);
+                        startActivity(intent);
+                    });
                 }
             });
         }
@@ -109,6 +116,11 @@ public class PostDetailsActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
+            } catch (NoInternetException e) {
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(PostDetailsActivity.this, NoInternetActivity.class);
+                    startActivity(intent);
+                });
             }
         });
 
@@ -118,11 +130,21 @@ public class PostDetailsActivity extends AppCompatActivity {
 
                 runOnUiThread(() -> {
                     images_list.setAdapter(new PostImageAdapter(PostDetailsActivity.this, R.layout.image_upload_item, postImages));
+                    images_list.setOnItemClickListener((parent, view, position, id) -> {
+                        Intent intent = new Intent(PostDetailsActivity.this, ImageSliderActivity.class);
+                        intent.putExtra("postID", postId);
+                        startActivity(intent);
+                    });
                 });
             }
             catch (IOException | UnAuthorizedException | JSONException e) {
                 runOnUiThread(() -> {
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                });
+            } catch (NoInternetException e) {
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(PostDetailsActivity.this, NoInternetActivity.class);
+                    startActivity(intent);
                 });
             }
         });
