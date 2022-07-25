@@ -9,4 +9,8 @@
         android:icon="@drawable/ic_baseline_notifications_24"
         android:id="@+id/notifications"
         app:showAsAction="ifRoom"/>
+    <item android:title="@string/search_for_posts"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:id="@+id/search_posts"
+        app:showAsAction="ifRoom"/>
 </menu>

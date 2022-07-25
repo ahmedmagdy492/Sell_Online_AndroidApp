@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -65,6 +66,7 @@ public class PostEditActivity extends AppCompatActivity implements WarningDialog
     private Spinner categoryList;
     private FloatingActionButton btnSave;
     private GridView gridView;
+    private TextView statusView;
 
     private void initViews() {
         title = findViewById(R.id.post_title_create);
@@ -75,6 +77,7 @@ public class PostEditActivity extends AppCompatActivity implements WarningDialog
         gridView = findViewById(R.id.images_layout_2);
 
         btnSave.setEnabled(false);
+        statusView = findViewById(R.id.post_status);
     }
 
 
@@ -144,6 +147,19 @@ public class PostEditActivity extends AppCompatActivity implements WarningDialog
         return true;
     }
 
+    private boolean changePostStatus() throws IOException, NoInternetException, UnAuthorizedException {
+        HttpClient httpClient = new HttpClient(
+                PostEditActivity.this,
+                getSharedPreferences(
+                        getString(R.string.preference_key),
+                        MODE_PRIVATE
+                )
+        );
+
+        httpClient.patchRequest("Posts/Status/Update?status=2&postId=" + postID, "");
+        return true;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -169,6 +185,13 @@ public class PostEditActivity extends AppCompatActivity implements WarningDialog
                     //TextView categoryId = categoryList.getSelectedView().findViewById(R.id.category_id_spinner);
                     title.setText(post.getTitle());
                     content.setText(post.getContent());
+                    if(post.getPostStatesStateID() == 1) {
+                        statusView.setText(getString(R.string.post_status_open));
+                    }
+                    else {
+                        statusView.setTextColor(Color.RED);
+                        statusView.setText(getString(R.string.post_status_closed));
+                    }
                     //categoryId.setText(String.valueOf(post.getPostCategoryID()));
                     //categoryList.setSelection((int)post.getPostCategoryID());
                 });
@@ -272,8 +295,36 @@ public class PostEditActivity extends AppCompatActivity implements WarningDialog
         if(item.getItemId() == R.id.delete_post) {
             // show some alert to warn him
             WarningDialogFragment warningDialogFragment =
-                    WarningDialogFragment.newInstance("Are you sure you want to delete the post you won't be able to undo this action ?");
+                    WarningDialogFragment
+                            .newInstance(
+                            "Are you sure you want to delete the post you won't be able to undo this action ?");
             warningDialogFragment.show(getSupportFragmentManager(), "delete post");
+        }
+        else if(item.getItemId() == R.id.change_status) {
+            // show some alert
+            Executors.newSingleThreadExecutor()
+                    .execute(() -> {
+                        try {
+                            boolean result = changePostStatus();
+                            if(result) {
+                                runOnUiThread(() -> {
+                                    Toast.makeText(this, "Post Status has been changed to Sold Successfully", Toast.LENGTH_SHORT).show();
+                                    finish();
+                                });
+                            }
+                        }
+                        catch (IOException | UnAuthorizedException e) {
+                            runOnUiThread(() -> {
+                                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            });
+                        }
+                        catch (NoInternetException e) {
+                            runOnUiThread(() -> {
+                                Intent intent = new Intent(PostEditActivity.this, NoInternetActivity.class);
+                                startActivity(intent);
+                            });
+                        }
+                    });
         }
         return true;
     }

@@ -141,6 +141,9 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(this, ChangePasswordActivity.class);
             startActivity(intent);
         }
+        else if(item.getItemId() == R.id.search_posts) {
+            onSearchRequested();
+        }
         return true;
     }
 

@@ -23,6 +23,9 @@
     <string name="next">Next</string>
     <string name="prev">Prev</string>
     <string name="post_images">Post Images</string>
+    <string name="search_for_posts">Search Posts</string>
+    <string name="post_status_open">Current Status: Open (Anyone can see the post and negotiate you)</string>
+    <string name="post_status_closed">Current Status: Sold (no one can see the post except you and no longer negotiate)</string>
 
     <string name="preference_key" translatable="false">sell_online_store</string>
     <string name="api_url" translatable="false">http://192.168.1.2:5000/v1/</string>
