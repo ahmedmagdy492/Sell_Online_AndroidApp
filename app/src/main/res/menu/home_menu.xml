@@ -5,12 +5,16 @@
     <item android:title="@string/change_password" android:id="@+id/change_password"/>
     <item android:title="@string/log_out"
         android:id="@+id/log_out_btn"/>
-    <item android:title="@string/notifications"
-        android:icon="@drawable/ic_baseline_notifications_24"
-        android:id="@+id/notifications"
+    <item android:title="@string/messages"
+        android:icon="@drawable/ic_baseline_message_24"
+        android:id="@+id/messages"
         app:showAsAction="ifRoom"/>
     <item android:title="@string/search_for_posts"
         android:icon="@drawable/ic_baseline_search_24"
         android:id="@+id/search_posts"
+        app:showAsAction="ifRoom"/>
+    <item android:title="@string/notifications"
+        android:icon="@drawable/ic_baseline_notifications_24"
+        android:id="@+id/notifications"
         app:showAsAction="ifRoom"/>
 </menu>

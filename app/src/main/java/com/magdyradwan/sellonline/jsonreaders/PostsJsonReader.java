@@ -52,7 +52,6 @@ public class PostsJsonReader implements IJsonReader<ArrayList<PostResponseModel>
             for(int j = 0; j < views.length(); j++) {
                 PostView postView = new PostView();
                 JSONObject view = views.getJSONObject(j);
-                postView.setPostViewID(view.getLong("postViewID"));
                 postView.setViewerID(view.getString("viewerID"));
                 postView.setPostID(view.getString("postID"));
                 postViews.add(postView);

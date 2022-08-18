@@ -144,6 +144,11 @@ public class HomeActivity extends AppCompatActivity {
         else if(item.getItemId() == R.id.search_posts) {
             onSearchRequested();
         }
+        else if(item.getItemId() == R.id.messages)
+        {
+            Intent intent = new Intent(this, ChatsActivity.class);
+            startActivity(intent);
+        }
         return true;
     }
 

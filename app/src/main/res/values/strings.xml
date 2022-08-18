@@ -23,7 +23,8 @@
     <string name="next">Next</string>
     <string name="prev">Prev</string>
     <string name="post_images">Post Images</string>
-    <string name="search_for_posts">Search Posts</string>
+    <string name="search_for_posts">Search Posts</string>>
+    <string name="messages">Messages</string>>
     <string name="post_status_open">Current Status: Open (Anyone can see the post and negotiate you)</string>
     <string name="post_status_closed">Current Status: Sold (no one can see the post except you and no longer negotiate)</string>
 
@@ -39,5 +40,7 @@
     <string name="password_must_be_at_least_8_characters">Password must be at least 8 characters</string>
     <string name="set_post_as_sold">Set Post As Sold</string>
     <string name="delete_post">Delete Post</string>
+    <string name="send">Send</string>
+    <string name="write_message_here">Write Message Here...</string>
     <!--    <string name="api_url" translatable="false">http://localhost:7283/v1/</string>-->
 </resources>

@@ -9,23 +9,27 @@
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/drawable/ic_baseline_save_24.xml" value="0.1645" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/drawable/tag_item.xml" value="0.1645" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_change_password.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_chats.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_create_post.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_edit_post.xml" value="0.20878623188405798" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_home.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_image_slider.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_main.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_messages.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_no_internet.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_notifications.xml" value="0.20878623188405798" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_post_details.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_post_edit.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_search.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/activity_splash.xml" value="0.21666666666666667" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/chat_item.xml" value="0.20878623188405798" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/fragment_my_posts.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/fragment_notifications.xml" value="0.20878623188405798" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/fragment_posts.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/fragment_profile.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/fragment_warning_dialog.xml" value="0.21666666666666667" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/image_upload_item.xml" value="0.48221757322175735" />
+        <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/message_item.xml" value="0.20878623188405798" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/my_post_item.xml" value="0.20878623188405798" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/notification_item.xml" value="0.20878623188405798" />
         <entry key="..\:/Android_Apps/SellOnline/app/src/main/res/layout/post_item.xml" value="0.20878623188405798" />

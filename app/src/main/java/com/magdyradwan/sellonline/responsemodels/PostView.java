@@ -1,17 +1,9 @@
 package com.magdyradwan.sellonline.responsemodels;
 
 public class PostView {
-    private long postViewID;
     private String postID;
     private String viewerID;
 
-    public long getPostViewID() {
-        return postViewID;
-    }
-
-    public void setPostViewID(long postViewID) {
-        this.postViewID = postViewID;
-    }
 
     public String getPostID() {
         return postID;
