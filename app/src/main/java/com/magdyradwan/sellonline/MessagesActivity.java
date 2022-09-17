@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Intent;
 import android.media.MediaTimestamp;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,20 +30,20 @@ import java.util.concurrent.Executors;
 
 public class MessagesActivity extends AppCompatActivity {
 
-    public List<MessageModel> getMessagesByChatID(String chatId) throws IOException, NoInternetException, UnAuthorizedException, JSONException {
+    public List<MessageModel> getMessagesOfChat(String chatID) throws IOException, NoInternetException, UnAuthorizedException, JSONException {
         HttpClient httpClient = new HttpClient(MessagesActivity.this,
                 getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
 
-        String response = httpClient.getRequest("Messages?chatId=" + chatId);
+        String response = httpClient.getRequest("Message?chatId="+chatID);
         MessagesJsonReader messagesJsonReader = new MessagesJsonReader();
         return messagesJsonReader.ReadJson(response);
     }
 
-    public void sendMessage(MessageDTO model, String receiverId) throws IOException, NoInternetException, UnAuthorizedException {
+    public void sendMessage(MessageDTO model) throws IOException, NoInternetException, UnAuthorizedException {
         HttpClient httpClient = new HttpClient(MessagesActivity.this,
                 getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
 
-        httpClient.postRequest("Messages/SendMessage?receiverId=" + receiverId,
+        httpClient.postRequest("Message",
                 model.convertToJson());
     }
 
@@ -61,26 +62,29 @@ public class MessagesActivity extends AppCompatActivity {
         }
 
         Intent intent = getIntent();
-        String chatId = intent.getStringExtra("chatId");
         String receiverId = intent.getStringExtra("receiverId");
+        String chatID = intent.getStringExtra("chatId");
+        String userId = getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE).getString("userId", "");
 
         RecyclerView messagesList = findViewById(R.id.messages);
 
         ExecutorService executorService = Executors.newFixedThreadPool(2);
         executorService.execute(() -> {
             try {
-                List<MessageModel> messages = getMessagesByChatID(chatId);
+                List<MessageModel> messages = getMessagesOfChat(chatID);
 
                 // TODO: add messages to recycler view
                 runOnUiThread(() -> {
-                    messagesList.setAdapter(new MessageRecyclerAdapter(MessagesActivity.this, messages));
+                    messagesList.setAdapter(new MessageRecyclerAdapter(MessagesActivity.this, messages, userId));
                     LinearLayoutManager linearLayoutManager = new LinearLayoutManager(MessagesActivity.this);
                     linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                     messagesList.setLayoutManager(linearLayoutManager);
+                    messagesList.scrollBy(0, 10000);
                 });
             }
             catch (IOException | UnAuthorizedException | JSONException e) {
                 runOnUiThread(() -> {
+                    Log.d("TAG", e.getStackTrace()[0].getMethodName() + ": threw execption " + e.getClass().getName());
                     Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
             }
@@ -95,13 +99,19 @@ public class MessagesActivity extends AppCompatActivity {
         btnSend.setOnClickListener(v -> {
             if(!messageContent.getText().toString().equals(""))
             {
-                MessageDTO messageDTO = new MessageDTO(messageContent.getText().toString(), null, chatId);
+                MessageDTO messageDTO = new MessageDTO();
+                messageDTO.setMessage(messageContent.getText().toString());
+                messageDTO.setSenderId(userId);
+                messageDTO.setRecieverId(receiverId);
+                messageDTO.setChatID(chatID);
+
                 executorService.execute(() -> {
                     try {
-                        sendMessage(messageDTO, receiverId);
+                        sendMessage(messageDTO);
                         runOnUiThread(() -> {
                             Toast.makeText(this, "Your Message has been sent", Toast.LENGTH_SHORT).show();
                             messageContent.setText("");
+                            messagesList.scrollBy(0, 10000);
                         });
                     }
                     catch (IOException | UnAuthorizedException e) {

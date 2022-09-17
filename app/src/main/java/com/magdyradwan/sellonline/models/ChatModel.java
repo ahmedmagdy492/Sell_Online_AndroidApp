@@ -4,15 +4,31 @@ public class ChatModel {
     private String chatID;
     private String senderID;
     private String receiverID;
-    private String senderName;
-    private String receiverName;
+    private String title;
+    private String date;
 
-    public ChatModel(String chatID, String senderID, String receiverID, String senderName, String receiverName) {
+    public ChatModel(String chatID, String senderID, String receiverID, String title, String date) {
         this.chatID = chatID;
         this.senderID = senderID;
         this.receiverID = receiverID;
-        this.senderName = senderName;
-        this.receiverName = receiverName;
+        this.title = title;
+        this.date = date;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getChatID() {
@@ -37,21 +53,5 @@ public class ChatModel {
 
     public void setReceiverID(String receiverID) {
         this.receiverID = receiverID;
-    }
-
-    public String getSenderName() {
-        return senderName;
-    }
-
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
-    }
-
-    public String getReceiverName() {
-        return receiverName;
-    }
-
-    public void setReceiverName(String receiverName) {
-        this.receiverName = receiverName;
     }
 }

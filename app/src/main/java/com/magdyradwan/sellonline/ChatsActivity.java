@@ -25,12 +25,12 @@ import java.util.concurrent.Executors;
 
 public class ChatsActivity extends AppCompatActivity {
 
-    public List<ChatModel> getChatsOfUser(String userId) throws IOException, NoInternetException, UnAuthorizedException, JSONException {
+    public List<ChatModel> getChatsOfUser() throws IOException, NoInternetException, UnAuthorizedException, JSONException {
 
         HttpClient httpClient = new HttpClient(ChatsActivity.this,
                 getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
 
-        String response = httpClient.getRequest("Chats");
+        String response = httpClient.getRequest("Chat");
         ChatJsonReader chatJsonReader = new ChatJsonReader();
         return chatJsonReader.ReadJson(response);
     }
@@ -54,7 +54,7 @@ public class ChatsActivity extends AppCompatActivity {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                List<ChatModel> chats = getChatsOfUser(userId);
+                List<ChatModel> chats = getChatsOfUser();
 
                 runOnUiThread(() -> {
                     ChatsAdapter chatsAdapter = new ChatsAdapter(ChatsActivity.this, R.layout.chat_item, chats);
@@ -63,7 +63,13 @@ public class ChatsActivity extends AppCompatActivity {
                     chat_list.setOnItemClickListener((parent, view, position, id) -> {
                         Intent intent = new Intent(ChatsActivity.this, MessagesActivity.class);
                         intent.putExtra("chatId", chats.get(position).getChatID());
-                        intent.putExtra("receiverId", chats.get(position).getReceiverID());
+                        if(chats.get(position).getReceiverID().equals(userId))
+                        {
+                            intent.putExtra("receiverId", chats.get(position).getSenderID());
+                        }
+                        else {
+                            intent.putExtra("receiverId", chats.get(position).getReceiverID());
+                        }
                         startActivity(intent);
                     });
                 });

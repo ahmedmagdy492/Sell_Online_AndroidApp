@@ -3,31 +3,10 @@ package com.magdyradwan.sellonline.dto;
 import com.magdyradwan.sellonline.IJsonConvertable;
 
 public class MessageDTO implements IJsonConvertable {
-    private String content;
-    private String sentDate;
     private String chatID;
-
-    public MessageDTO(String content, String sentDate, String chatID) {
-        this.content = content;
-        this.sentDate = sentDate;
-        this.chatID = chatID;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getSentDate() {
-        return sentDate;
-    }
-
-    public void setSentDate(String sentDate) {
-        this.sentDate = sentDate;
-    }
+    private String message;
+    private String senderId;
+    private String recieverId;
 
     public String getChatID() {
         return chatID;
@@ -37,12 +16,37 @@ public class MessageDTO implements IJsonConvertable {
         this.chatID = chatID;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getSenderId() {
+        return senderId;
+    }
+
+    public void setSenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
+    public String getRecieverId() {
+        return recieverId;
+    }
+
+    public void setRecieverId(String recieverId) {
+        this.recieverId = recieverId;
+    }
+
     @Override
     public String convertToJson() {
-        StringBuilder stringBuilder = new StringBuilder("{\"content\":\"");
-        stringBuilder.append(content).append("\",\"sentDate\":\"");
-        stringBuilder.append(sentDate).append("\",\"chatID\":\"");
-        stringBuilder.append(chatID).append("\"}");
+        StringBuilder stringBuilder = new StringBuilder("{\"message\":\"");
+        stringBuilder.append(message).append("\",\"chatID\":\"");
+        stringBuilder.append(chatID).append("\",\"senderId\":\"");
+        stringBuilder.append(senderId).append("\",\"receiverID\":\"");
+        stringBuilder.append(recieverId).append("\"}");
         return stringBuilder.toString();
     }
 }

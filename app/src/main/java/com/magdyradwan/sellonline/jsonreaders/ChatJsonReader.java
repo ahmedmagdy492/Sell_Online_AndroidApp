@@ -24,19 +24,9 @@ public class ChatJsonReader implements IJsonReader<List<ChatModel>> {
             String chatId = cur.getString("chatID");
             String senderId = cur.getString("senderID");
             String receiverID = cur.getString("receiverID");
-            ChatModel chat = new ChatModel(chatId, senderId, receiverID, null, null);
-
-            if(!cur.isNull("senderName"))
-            {
-                String senderName = cur.getString("senderName");
-                chat.setSenderName(senderName);
-            }
-
-            if(!cur.isNull("receiverName"))
-            {
-                String receiverName = cur.getString("receiverName");
-                chat.setReceiverName(receiverName);
-            }
+            String title = cur.getString("title");
+            String date = cur.getString("date");
+            ChatModel chat = new ChatModel(chatId, senderId, receiverID, title, date);
 
             chats.add(chat);
         }

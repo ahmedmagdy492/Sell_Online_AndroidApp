@@ -48,6 +48,10 @@ public class HttpClient {
 
         if(httpURLConnection.getResponseCode() == 401)
             throw new UnAuthorizedException("UnAuthorized");
+        if(httpURLConnection.getResponseCode() != 200)
+            throw new IOException("the server returned: " + httpURLConnection.getResponseCode());
+
+        Log.d("TAG", "getRequest: got here");
 
         return readFromInputStream(httpURLConnection.getInputStream());
     }
@@ -159,6 +163,8 @@ public class HttpClient {
             str.append(line);
             line = br.readLine();
         }
+
+        Log.d("TAG", "readFromInputStream: " + str);
 
         br.close();
 

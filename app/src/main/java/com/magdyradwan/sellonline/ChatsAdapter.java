@@ -17,12 +17,15 @@ import java.util.List;
 public class ChatsAdapter extends ArrayAdapter<ChatModel> {
 
     private final Context context;
-    private List<ChatModel> chats;
+    private final List<ChatModel> chats;
+    private final String userId;
 
     public ChatsAdapter(@NonNull Context context, int resource, @NonNull List<ChatModel> objects) {
         super(context, resource, objects);
         this.context = context;
         chats = objects;
+        userId = context.getSharedPreferences(context.getString(R.string.preference_key),
+                Context.MODE_PRIVATE).getString("userId", "");
     }
 
     @NonNull
@@ -36,13 +39,7 @@ public class ChatsAdapter extends ArrayAdapter<ChatModel> {
         }
 
         TextView txtView = convertView.findViewById(R.id.chat_name);
-        if(!cur.getSenderName().equals(""))
-        {
-            txtView.setText(cur.getSenderName());
-        }
-        else {
-            txtView.setText(cur.getReceiverName());
-        }
+        txtView.setText(cur.getTitle() + "\n" + cur.getDate());
 
         return convertView;
     }
