@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.magdyradwan.sellonline.adapters.PostsAdapter;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.jsonreaders.PostsJsonReader;
@@ -19,7 +19,6 @@ import com.magdyradwan.sellonline.responsemodels.PostResponseModel;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,7 +35,7 @@ public class SearchActivity extends AppCompatActivity {
 
         String response = httpClient.getRequest("Posts/Search?query=" + query);
         PostsJsonReader postsJsonReader = new PostsJsonReader();
-        return postsJsonReader.ReadJson(response);
+        return postsJsonReader.readJson(response);
     }
 
     @Override

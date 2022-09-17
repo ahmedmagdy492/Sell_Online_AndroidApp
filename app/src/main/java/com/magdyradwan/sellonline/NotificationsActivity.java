@@ -3,7 +3,6 @@ package com.magdyradwan.sellonline;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -12,12 +11,14 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
+import com.magdyradwan.sellonline.adapters.NotificationAdapter;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
+import com.magdyradwan.sellonline.irepository.INotificationRepo;
 import com.magdyradwan.sellonline.jsonreaders.NotificationJsonReader;
+import com.magdyradwan.sellonline.repository.NotificationRepo;
 import com.magdyradwan.sellonline.responsemodels.NotificationResponseModel;
 
 import org.json.JSONException;
@@ -33,17 +34,6 @@ public class NotificationsActivity extends AppCompatActivity {
 
     private SharedPreferences sharedPreferences;
     private ProgressBar noti_loader;
-
-    private List<NotificationResponseModel> getMyNotifications () throws IOException, UnAuthorizedException, JSONException, NoInternetException {
-        HttpClient httpClient = new HttpClient(NotificationsActivity.this,
-                sharedPreferences
-        );
-
-        String response = httpClient.getRequest("Notification");
-        Log.d(TAG, "getMyNotifications: response " + response);
-        NotificationJsonReader notificationJsonReader = new NotificationJsonReader();
-        return notificationJsonReader.ReadJson(response);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +55,13 @@ public class NotificationsActivity extends AppCompatActivity {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                List<NotificationResponseModel> notifications = getMyNotifications();
+                HttpClient httpClient = new HttpClient(NotificationsActivity.this,
+                        sharedPreferences
+                );
+
+                INotificationRepo notificationRepo = new NotificationRepo(httpClient);
+
+                List<NotificationResponseModel> notifications = notificationRepo.getMyNotifications();
 
                 runOnUiThread(() -> {
                     LinearLayout txt = findViewById(R.id.empty_view);

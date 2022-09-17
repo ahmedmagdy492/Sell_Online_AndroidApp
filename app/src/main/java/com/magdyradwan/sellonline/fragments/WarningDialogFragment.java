@@ -1,26 +1,17 @@
-package com.magdyradwan.sellonline;
+package com.magdyradwan.sellonline.fragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.magdyradwan.sellonline.exceptions.NoInternetException;
-import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
-
-import java.io.IOException;
-import java.util.concurrent.Executors;
+import com.magdyradwan.sellonline.R;
 
 /**
  * A simple {@link Fragment} subclass.

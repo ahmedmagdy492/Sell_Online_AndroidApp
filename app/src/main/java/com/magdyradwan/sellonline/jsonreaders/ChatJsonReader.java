@@ -12,7 +12,7 @@ import java.util.List;
 public class ChatJsonReader implements IJsonReader<List<ChatModel>> {
 
     @Override
-    public List<ChatModel> ReadJson(String json) throws JSONException {
+    public List<ChatModel> readJson(String json) throws JSONException {
         JSONObject root = new JSONObject(json);
         JSONArray data = root.getJSONArray("data");
         List<ChatModel> chats = new ArrayList<>();

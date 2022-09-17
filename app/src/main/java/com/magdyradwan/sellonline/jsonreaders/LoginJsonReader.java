@@ -8,7 +8,7 @@ import org.json.JSONObject;
 public class LoginJsonReader implements IJsonReader<LoginResponseModel> {
 
     @Override
-    public LoginResponseModel ReadJson(String json) throws JSONException {
+    public LoginResponseModel readJson(String json) throws JSONException {
         LoginResponseModel loginResponseModel = new LoginResponseModel();
         JSONObject object = new JSONObject(json);
         loginResponseModel.setMessage(object.getString("message"));

@@ -1,49 +1,41 @@
 package com.magdyradwan.sellonline;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.ActivityResultRegistry;
-import androidx.activity.result.contract.ActivityResultContract;
 import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
-import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.magdyradwan.sellonline.adapters.CategoryAdapter;
+import com.magdyradwan.sellonline.adapters.ImagesAdapter;
 import com.magdyradwan.sellonline.dto.ImageUploadDTO;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.helpers.Base64Converter;
 import com.magdyradwan.sellonline.helpers.FileReaderHelper;
+import com.magdyradwan.sellonline.irepository.ILookupRepo;
+import com.magdyradwan.sellonline.irepository.IPostsRepo;
 import com.magdyradwan.sellonline.jsonreaders.CategoryListJsonReader;
 import com.magdyradwan.sellonline.jsonreaders.CreatePostJsonReader;
 import com.magdyradwan.sellonline.models.CreatePostModel;
 import com.magdyradwan.sellonline.models.UploadImageModel;
+import com.magdyradwan.sellonline.repository.LookupRepo;
+import com.magdyradwan.sellonline.repository.PostsRepo;
 import com.magdyradwan.sellonline.responsemodels.PostCategory;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -53,6 +45,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
     private static final String TAG = "CreatePostActivity";
 
+    private IPostsRepo postsRepo;
     private List<ImageUploadDTO> images = new ArrayList<>();
     private EditText title;
     private EditText content;
@@ -89,43 +82,6 @@ public class CreatePostActivity extends AppCompatActivity {
         btnSave.setEnabled(false);
     }
 
-    private ArrayList<PostCategory> getCategoryList() throws IOException, UnAuthorizedException, JSONException, NoInternetException {
-        HttpClient httpClient = new HttpClient(this, getSharedPreferences(
-                getString(R.string.preference_key),
-                MODE_PRIVATE
-        ));
-
-        String response = httpClient.getRequest("Lookups/Categories");
-        CategoryListJsonReader categoryListJsonReader = new CategoryListJsonReader();
-        return categoryListJsonReader.ReadJson(response);
-    }
-
-    private String createPost() throws IOException, UnAuthorizedException, JSONException, NoInternetException {
-        TextView categoryId = categoryList.getSelectedView().findViewById(R.id.category_id_spinner);
-        CreatePostModel postModel = new CreatePostModel(
-                title.getText().toString(),
-                content.getText().toString(),
-                Integer.parseInt(categoryId.getText().toString())
-                );
-        HttpClient httpClient = new HttpClient(this, getSharedPreferences(
-                getString(R.string.preference_key),
-                MODE_PRIVATE
-        ));
-
-        String response = httpClient.postRequest("Posts", postModel.convertToJson());
-        CreatePostJsonReader createPostJsonReader = new CreatePostJsonReader();
-        return createPostJsonReader.ReadJson(response).getPostID();
-    }
-
-    private boolean uploadImagesToPost(UploadImageModel model) throws IOException, UnAuthorizedException, NoInternetException {
-        HttpClient httpClient = new HttpClient(CreatePostActivity.this,
-                getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
-
-        String json = model.convertToJson();
-        httpClient.postRequest("Posts/Images/Upload", json);
-        return true;
-    }
-
     private boolean validateInputs() {
 
         if(title.getText().toString().equals("")) {
@@ -157,7 +113,13 @@ public class CreatePostActivity extends AppCompatActivity {
 
         executorService.execute(() -> {
             try {
-                ArrayList<PostCategory> categories = getCategoryList();
+                HttpClient httpClient = new HttpClient(this, getSharedPreferences(
+                        getString(R.string.preference_key),
+                        MODE_PRIVATE
+                ));
+
+                ILookupRepo lookupRepo = new LookupRepo(httpClient);
+                ArrayList<PostCategory> categories = lookupRepo.getCategoryList();
 
                 runOnUiThread(() -> {
                     categoryList.setAdapter(new CategoryAdapter(CreatePostActivity.this,
@@ -180,9 +142,25 @@ public class CreatePostActivity extends AppCompatActivity {
 
         btnSave.setOnClickListener(v -> {
             if(validateInputs()) {
+
+                TextView categoryId = categoryList.getSelectedView().findViewById(R.id.category_id_spinner);
+                CreatePostModel postModel = new CreatePostModel(
+                        title.getText().toString(),
+                        content.getText().toString(),
+                        Integer.parseInt(categoryId.getText().toString())
+                );
+
                 executorService.execute(() -> {
                     try {
-                        String postID = createPost();
+                        if(postsRepo == null) {
+                            HttpClient httpClient = new HttpClient(this, getSharedPreferences(
+                                    getString(R.string.preference_key),
+                                    MODE_PRIVATE
+                            ));
+                            postsRepo = new PostsRepo(httpClient);
+                        }
+
+                        String postID = postsRepo.createPost(postModel);
 
                         if(postID != null && !postID.equals(""))
                         {
@@ -199,7 +177,7 @@ public class CreatePostActivity extends AppCompatActivity {
                                                     img.getImage())
                                     );
                                     Log.d(TAG, "iterating over images: " + imgAsBase64);
-                                    boolean result = uploadImagesToPost(new UploadImageModel(
+                                    boolean result = postsRepo.uploadImagesToPost(new UploadImageModel(
                                             postID,
                                             "png",
                                             imgAsBase64

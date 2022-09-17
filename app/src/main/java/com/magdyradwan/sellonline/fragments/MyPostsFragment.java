@@ -1,4 +1,4 @@
-package com.magdyradwan.sellonline;
+package com.magdyradwan.sellonline.fragments;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,9 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.magdyradwan.sellonline.HttpClient;
+import com.magdyradwan.sellonline.NoInternetActivity;
+import com.magdyradwan.sellonline.R;
+import com.magdyradwan.sellonline.adapters.MyPostsAdapter;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
+import com.magdyradwan.sellonline.irepository.IPostsRepo;
 import com.magdyradwan.sellonline.jsonreaders.PostsJsonReader;
+import com.magdyradwan.sellonline.repository.PostsRepo;
 import com.magdyradwan.sellonline.responsemodels.PostResponseModel;
 
 import org.json.JSONException;
@@ -33,6 +39,7 @@ public class MyPostsFragment extends Fragment {
     private static final String TAG = "MyPostsFragment";
     private final int pageNo = 1;
     private ProgressBar loader;
+    private int pageSize = 10;
 
     public MyPostsFragment() {
         // Required empty public constructor
@@ -57,14 +64,13 @@ public class MyPostsFragment extends Fragment {
                         Context.MODE_PRIVATE
                 ));
 
-                String response =
-                        httpClient.getRequest("Posts/MyPosts?pageNo=" + pageNo + "&pageSize=10");
-                PostsJsonReader postsJsonReader = new PostsJsonReader();
-                ArrayList<PostResponseModel> trendingPosts = postsJsonReader.ReadJson(response);
+                IPostsRepo postsRepo = new PostsRepo(httpClient);
+
+                ArrayList<PostResponseModel> myPosts = postsRepo.getMyPosts(pageNo, pageSize);
 
                 getActivity().runOnUiThread(() -> {
                     loader.setVisibility(View.GONE);
-                    my_posts_list.setAdapter(new MyPostsAdapter(getActivity(), trendingPosts));
+                    my_posts_list.setAdapter(new MyPostsAdapter(getActivity(), myPosts));
                 });
 
             } catch (IOException | UnAuthorizedException | JSONException e) {

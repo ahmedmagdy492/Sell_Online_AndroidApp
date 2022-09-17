@@ -1,7 +1,5 @@
 package com.magdyradwan.sellonline;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,11 +13,8 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.Spinner;
@@ -27,19 +22,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.magdyradwan.sellonline.dto.ImageUploadDTO;
+import com.magdyradwan.sellonline.adapters.CategoryAdapter;
+import com.magdyradwan.sellonline.adapters.ReadOnlyImagesAdapter;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
+import com.magdyradwan.sellonline.fragments.WarningDialogFragment;
 import com.magdyradwan.sellonline.helpers.Base64Converter;
-import com.magdyradwan.sellonline.helpers.FileReaderHelper;
 import com.magdyradwan.sellonline.jsonreaders.CategoryListJsonReader;
-import com.magdyradwan.sellonline.jsonreaders.CreatePostJsonReader;
 import com.magdyradwan.sellonline.jsonreaders.PostDetailsJsonReader;
 import com.magdyradwan.sellonline.jsonreaders.PostImageJSONReader;
-import com.magdyradwan.sellonline.jsonreaders.PostsJsonReader;
-import com.magdyradwan.sellonline.models.CreatePostModel;
 import com.magdyradwan.sellonline.models.EditPostModel;
-import com.magdyradwan.sellonline.models.UploadImageModel;
 import com.magdyradwan.sellonline.responsemodels.PostCategory;
 import com.magdyradwan.sellonline.responsemodels.PostImageResponseModel;
 import com.magdyradwan.sellonline.responsemodels.PostResponseModel;
@@ -48,11 +40,7 @@ import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -104,7 +92,7 @@ public class PostEditActivity extends AppCompatActivity implements WarningDialog
                 ));
         String response = httpClient.getRequest("Posts/" + postID);
         PostDetailsJsonReader reader = new PostDetailsJsonReader();
-        ArrayList<PostResponseModel> posts = reader.ReadJson(response);
+        ArrayList<PostResponseModel> posts = reader.readJson(response);
         return posts.get(0);
     }
 
@@ -117,7 +105,7 @@ public class PostEditActivity extends AppCompatActivity implements WarningDialog
 
         String response = httpClient.getRequest("Lookups/Categories");
         CategoryListJsonReader categoryListJsonReader = new CategoryListJsonReader();
-        return categoryListJsonReader.ReadJson(response);
+        return categoryListJsonReader.readJson(response);
     }
 
     private ArrayList<PostImageResponseModel> getImagesOfPost(String postID) throws IOException, UnAuthorizedException, JSONException, NoInternetException {
@@ -127,7 +115,7 @@ public class PostEditActivity extends AppCompatActivity implements WarningDialog
 
         String response = httpClient.getRequest("Posts/Images?postID=" + postID);
         PostImageJSONReader postImageJSONReader = new PostImageJSONReader();
-        return postImageJSONReader.ReadJson(response);
+        return postImageJSONReader.readJson(response);
     }
 
     private boolean editPost() throws IOException, UnAuthorizedException, JSONException, NoInternetException {

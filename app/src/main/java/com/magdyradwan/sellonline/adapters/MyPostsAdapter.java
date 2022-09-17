@@ -1,4 +1,4 @@
-package com.magdyradwan.sellonline;
+package com.magdyradwan.sellonline.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +9,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.magdyradwan.sellonline.PostEditActivity;
+import com.magdyradwan.sellonline.R;
 import com.magdyradwan.sellonline.responsemodels.PostResponseModel;
 
 import java.util.ArrayList;

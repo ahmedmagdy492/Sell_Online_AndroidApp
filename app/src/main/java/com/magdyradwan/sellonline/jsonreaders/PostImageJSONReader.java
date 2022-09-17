@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class PostImageJSONReader implements IJsonReader<ArrayList<PostImageResponseModel>> {
     @Override
-    public ArrayList<PostImageResponseModel> ReadJson(String json) throws JSONException {
+    public ArrayList<PostImageResponseModel> readJson(String json) throws JSONException {
         JSONObject root = new JSONObject(json);
         JSONArray arr = root.getJSONArray("data");
         ArrayList<PostImageResponseModel> postImages = new ArrayList<>();

@@ -6,14 +6,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
-import android.media.MediaTimestamp;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.magdyradwan.sellonline.adapters.MessageRecyclerAdapter;
 import com.magdyradwan.sellonline.dto.MessageDTO;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
@@ -23,7 +22,6 @@ import com.magdyradwan.sellonline.models.MessageModel;
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -36,7 +34,7 @@ public class MessagesActivity extends AppCompatActivity {
 
         String response = httpClient.getRequest("Message?chatId="+chatID);
         MessagesJsonReader messagesJsonReader = new MessagesJsonReader();
-        return messagesJsonReader.ReadJson(response);
+        return messagesJsonReader.readJson(response);
     }
 
     public void sendMessage(MessageDTO model) throws IOException, NoInternetException, UnAuthorizedException {

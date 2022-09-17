@@ -1,4 +1,4 @@
-package com.magdyradwan.sellonline;
+package com.magdyradwan.sellonline.adapters;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.magdyradwan.sellonline.R;
 
 import java.util.ArrayList;
 import java.util.List;

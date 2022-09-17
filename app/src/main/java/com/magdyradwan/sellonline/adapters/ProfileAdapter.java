@@ -1,4 +1,4 @@
-package com.magdyradwan.sellonline;
+package com.magdyradwan.sellonline.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.magdyradwan.sellonline.R;
 import com.magdyradwan.sellonline.dto.ProfileOptionDTO;
 
 import java.util.List;

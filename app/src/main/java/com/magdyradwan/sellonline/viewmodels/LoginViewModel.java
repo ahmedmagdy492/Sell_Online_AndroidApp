@@ -1,4 +1,4 @@
-package com.magdyradwan.sellonline;
+package com.magdyradwan.sellonline.viewmodels;
 
 public class LoginViewModel implements IJsonConvertable {
     private String Email;

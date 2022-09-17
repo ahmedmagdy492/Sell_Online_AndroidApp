@@ -1,6 +1,6 @@
 package com.magdyradwan.sellonline.dto;
 
-import com.magdyradwan.sellonline.IJsonConvertable;
+import com.magdyradwan.sellonline.viewmodels.IJsonConvertable;
 
 public class MessageDTO implements IJsonConvertable {
     private String chatID;

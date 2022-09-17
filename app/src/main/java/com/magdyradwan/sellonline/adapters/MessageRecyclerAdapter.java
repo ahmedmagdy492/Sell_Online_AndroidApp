@@ -1,4 +1,4 @@
-package com.magdyradwan.sellonline;
+package com.magdyradwan.sellonline.adapters;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.magdyradwan.sellonline.R;
 import com.magdyradwan.sellonline.models.MessageModel;
 
 import java.util.List;

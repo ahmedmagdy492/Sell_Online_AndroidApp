@@ -51,8 +51,6 @@ public class HttpClient {
         if(httpURLConnection.getResponseCode() != 200)
             throw new IOException("the server returned: " + httpURLConnection.getResponseCode());
 
-        Log.d("TAG", "getRequest: got here");
-
         return readFromInputStream(httpURLConnection.getInputStream());
     }
 

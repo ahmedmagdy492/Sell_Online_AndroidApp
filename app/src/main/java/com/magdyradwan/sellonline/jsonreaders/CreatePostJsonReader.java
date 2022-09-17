@@ -7,7 +7,7 @@ import org.json.JSONObject;
 
 public class CreatePostJsonReader implements IJsonReader<CreatePostResponseModel> {
     @Override
-    public CreatePostResponseModel ReadJson(String json) throws JSONException {
+    public CreatePostResponseModel readJson(String json) throws JSONException {
         JSONObject root = new JSONObject(json);
         CreatePostResponseModel createPostResponseModel = new CreatePostResponseModel();
         createPostResponseModel.setMessage(root.getString("message"));

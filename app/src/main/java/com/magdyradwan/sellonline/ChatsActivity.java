@@ -5,35 +5,27 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.magdyradwan.sellonline.adapters.ChatsAdapter;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
+import com.magdyradwan.sellonline.irepository.IChatsRepo;
 import com.magdyradwan.sellonline.jsonreaders.ChatJsonReader;
 import com.magdyradwan.sellonline.models.ChatModel;
+import com.magdyradwan.sellonline.repository.ChatsRepo;
 
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ChatsActivity extends AppCompatActivity {
 
-    public List<ChatModel> getChatsOfUser() throws IOException, NoInternetException, UnAuthorizedException, JSONException {
-
-        HttpClient httpClient = new HttpClient(ChatsActivity.this,
-                getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
-
-        String response = httpClient.getRequest("Chat");
-        ChatJsonReader chatJsonReader = new ChatJsonReader();
-        return chatJsonReader.ReadJson(response);
-    }
+    private IChatsRepo chatsRepo = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +46,13 @@ public class ChatsActivity extends AppCompatActivity {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                List<ChatModel> chats = getChatsOfUser();
+                if(chatsRepo == null) {
+                    HttpClient httpClient = new HttpClient(ChatsActivity.this,
+                            getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
+                    chatsRepo = new ChatsRepo(httpClient);
+                }
+
+                List<ChatModel> chats = chatsRepo.getChatsOfUser();
 
                 runOnUiThread(() -> {
                     ChatsAdapter chatsAdapter = new ChatsAdapter(ChatsActivity.this, R.layout.chat_item, chats);

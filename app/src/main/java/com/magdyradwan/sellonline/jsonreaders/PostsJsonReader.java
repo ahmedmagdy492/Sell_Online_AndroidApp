@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class PostsJsonReader implements IJsonReader<ArrayList<PostResponseModel>> {
     @Override
-    public ArrayList<PostResponseModel> ReadJson(String json) throws JSONException {
+    public ArrayList<PostResponseModel> readJson(String json) throws JSONException {
         JSONObject root = new JSONObject(json);
         JSONArray data = root.getJSONArray("data");
         ArrayList<PostResponseModel> posts = new ArrayList<>();

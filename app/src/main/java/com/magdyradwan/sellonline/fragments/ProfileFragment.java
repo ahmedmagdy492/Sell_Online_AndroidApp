@@ -1,8 +1,5 @@
-package com.magdyradwan.sellonline;
+package com.magdyradwan.sellonline.fragments;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,12 +7,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.magdyradwan.sellonline.R;
+import com.magdyradwan.sellonline.adapters.ProfileAdapter;
 import com.magdyradwan.sellonline.dto.ProfileOptionDTO;
-import com.magdyradwan.sellonline.responsemodels.PhoneNumberResponseModel;
 import com.magdyradwan.sellonline.responsemodels.ProfileResponseModel;
 
 import java.util.ArrayList;

@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class CategoryListJsonReader implements IJsonReader<ArrayList<PostCategory>> {
     @Override
-    public ArrayList<PostCategory> ReadJson(String json) throws JSONException {
+    public ArrayList<PostCategory> readJson(String json) throws JSONException {
         JSONObject root = new JSONObject(json);
         ArrayList<PostCategory> categories = new ArrayList<>();
         JSONArray arr = root.getJSONArray("data");

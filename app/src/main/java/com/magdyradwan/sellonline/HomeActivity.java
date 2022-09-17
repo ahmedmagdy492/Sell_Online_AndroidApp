@@ -3,7 +3,6 @@ package com.magdyradwan.sellonline;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,27 +10,25 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.navigation.NavigationBarView;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
+import com.magdyradwan.sellonline.fragments.MyPostsFragment;
+import com.magdyradwan.sellonline.fragments.PostsFragment;
+import com.magdyradwan.sellonline.fragments.ProfileFragment;
+import com.magdyradwan.sellonline.irepository.IUsersRepo;
 import com.magdyradwan.sellonline.jsonreaders.ProfileJsonReader;
-import com.magdyradwan.sellonline.responsemodels.NotificationResponseModel;
+import com.magdyradwan.sellonline.repository.UsersRepo;
 import com.magdyradwan.sellonline.responsemodels.ProfileResponseModel;
 
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -53,10 +50,8 @@ public class HomeActivity extends AppCompatActivity {
                                 MODE_PRIVATE
                         ));
 
-                        String response = httpClient.getRequest("Users/Profile");
-                        ProfileJsonReader profileJsonReader = new ProfileJsonReader();
-                        ProfileResponseModel profileResponseModel = profileJsonReader.
-                                ReadJson(response).get(0);
+                        IUsersRepo usersRepo = new UsersRepo(httpClient);
+                        ProfileResponseModel profileResponseModel = usersRepo.getUserProfile();
 
                         ArrayList<String> phoneNumbers = new ArrayList<>();
 

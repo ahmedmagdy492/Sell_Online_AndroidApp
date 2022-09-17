@@ -11,7 +11,7 @@ import java.util.List;
 
 public class NotificationJsonReader implements IJsonReader<List<NotificationResponseModel>> {
     @Override
-    public List<NotificationResponseModel> ReadJson(String json) throws JSONException {
+    public List<NotificationResponseModel> readJson(String json) throws JSONException {
         JSONObject root = new JSONObject(json);
         List<NotificationResponseModel> notifications = new ArrayList<>();
         JSONArray arr = root.getJSONArray("data");

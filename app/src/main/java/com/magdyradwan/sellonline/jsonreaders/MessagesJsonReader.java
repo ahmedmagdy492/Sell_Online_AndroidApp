@@ -11,7 +11,7 @@ import java.util.List;
 
 public class MessagesJsonReader implements IJsonReader<List<MessageModel>> {
     @Override
-    public List<MessageModel> ReadJson(String json) throws JSONException {
+    public List<MessageModel> readJson(String json) throws JSONException {
         JSONObject root = new JSONObject(json);
         JSONArray data = root.getJSONArray("data");
         List<MessageModel> msgs = new ArrayList<>();

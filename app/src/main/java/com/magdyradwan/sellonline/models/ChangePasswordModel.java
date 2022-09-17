@@ -1,6 +1,6 @@
 package com.magdyradwan.sellonline.models;
 
-import com.magdyradwan.sellonline.IJsonConvertable;
+import com.magdyradwan.sellonline.viewmodels.IJsonConvertable;
 
 public class ChangePasswordModel implements IJsonConvertable {
     private String currentPassword;

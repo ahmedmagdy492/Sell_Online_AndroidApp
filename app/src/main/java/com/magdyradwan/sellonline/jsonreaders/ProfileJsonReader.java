@@ -12,7 +12,7 @@ import java.util.ArrayList;
 public class ProfileJsonReader implements IJsonReader<ArrayList<ProfileResponseModel>> {
 
     @Override
-    public ArrayList<ProfileResponseModel> ReadJson(String json) throws JSONException {
+    public ArrayList<ProfileResponseModel> readJson(String json) throws JSONException {
         JSONObject object = new JSONObject(json);
         JSONArray dataArray = object.getJSONArray("data");
         ArrayList<ProfileResponseModel> profileResponseModels = new ArrayList<>();

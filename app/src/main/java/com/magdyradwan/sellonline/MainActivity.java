@@ -1,31 +1,33 @@
 package com.magdyradwan.sellonline;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.helpers.NetworkConnectionChecker;
+import com.magdyradwan.sellonline.irepository.IAuthRepo;
 import com.magdyradwan.sellonline.jsonreaders.LoginJsonReader;
+import com.magdyradwan.sellonline.repository.AuthRepo;
 import com.magdyradwan.sellonline.responsemodels.LoginResponseModel;
+import com.magdyradwan.sellonline.viewmodels.LoginViewModel;
 
 import org.json.JSONException;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -37,34 +39,14 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLogin;
     private TextView email;
     private TextView password;
-    private Handler mHandler;
-    private HttpClient httpClient;
+    private ScrollView main_parent;
+    private IAuthRepo authRepo = null;
 
     private void initViews() {
         btnLogin = findViewById(R.id.btn_login);
         email = findViewById(R.id.txt_email);
         password = findViewById(R.id.txt_password);
-    }
-
-    private boolean checkForTokenValidity() throws IOException {
-        try {
-            HttpClient httpClient = new HttpClient(getApplicationContext(), getSharedPreferences(
-                    getString(R.string.preference_key),
-                    MODE_PRIVATE
-            ));
-
-            httpClient.getRequest("Auth/IsValid");
-            return true;
-        }
-        catch (UnAuthorizedException e) {
-            return false;
-        } catch (NoInternetException e) {
-            runOnUiThread(() -> {
-                Intent intent = new Intent(MainActivity.this, NoInternetActivity.class);
-                startActivity(intent);
-            });
-            return false;
-        }
+        main_parent = findViewById(R.id.main_parent);
     }
 
     @Override
@@ -80,41 +62,43 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
-        mHandler = new Handler(getMainLooper());
-        try {
-            httpClient = new HttpClient(getApplicationContext(),
-                    getSharedPreferences("userData", MODE_PRIVATE));
-        }
-        catch (IOException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            return;
-        } catch (NoInternetException e) {
-            runOnUiThread(() -> {
-                Intent intent = new Intent(MainActivity.this, NoInternetActivity.class);
-                startActivity(intent);
-            });
-            return;
-        }
-
-        String token = getData("token");
         ExecutorService service = Executors.newSingleThreadExecutor();
         service.execute(() -> {
             try {
-                boolean result = checkForTokenValidity();
+                if(authRepo == null) {
+                    HttpClient httpClient = new HttpClient(getApplicationContext(),
+                            getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
 
-                if(!token.equals("") && result) {
+                    authRepo = new AuthRepo(httpClient);
+                }
+
+                boolean result = authRepo.checkForTokenValidity();
+
+                if(result) {
                     // token is valid
                     Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                     startActivity(intent);
                 }
                 else {
-                    mHandler.post(() -> {
+                    runOnUiThread(() -> {
                         RelativeLayout relativeLayout = findViewById(R.id.loader_overlay);
                         relativeLayout.setVisibility(View.GONE);
+                        main_parent.setVisibility(View.VISIBLE);
                     });
                 }
-            } catch (IOException e) {
-                Log.e(TAG, "onCreate: when checking the validity of the token", e);
+            }
+            catch (IOException | UnAuthorizedException e) {
+                runOnUiThread(() -> {
+                    RelativeLayout relativeLayout = findViewById(R.id.loader_overlay);
+                    relativeLayout.setVisibility(View.GONE);
+                    main_parent.setVisibility(View.VISIBLE);
+                });
+            }
+            catch (NoInternetException e) {
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(MainActivity.this, NoInternetActivity.class);
+                    startActivity(intent);
+                });
             }
         });
 
@@ -130,16 +114,19 @@ public class MainActivity extends AppCompatActivity {
 
                 executorService.execute(() -> {
                     try {
-                        String response = httpClient.postRequest("Auth/Login", model.convertToJson());
+                        if(authRepo == null)
+                        {
+                            HttpClient httpClient = new HttpClient(getApplicationContext(),
+                                    getSharedPreferences("userData", MODE_PRIVATE));
 
-                        Log.d(TAG, "after response: " + response);
+                            authRepo = new AuthRepo(httpClient);
+                        }
 
-                        LoginJsonReader loginJsonReader = new LoginJsonReader();
-                        LoginResponseModel responseModel = loginJsonReader.ReadJson(response);
+                        LoginResponseModel responseModel = authRepo.login(model);
 
-                        // TODO: check for valid token returned by API
+                        // check for valid token returned by API
                         if(responseModel.getToken().equals("")) {
-                            mHandler.post(() -> {
+                            runOnUiThread(() -> {
                                 Toast.makeText(this, "Login Failed due to unexpected error", Toast.LENGTH_SHORT).show();
                                 btnLogin.setEnabled(true);
                                 btnLogin.setText(getString(R.string.login));
@@ -150,25 +137,26 @@ public class MainActivity extends AppCompatActivity {
                             setData("userId", responseModel.getUserId());
 
                             // goto to the next activity
-                            Intent intent = new Intent(this, HomeActivity.class);
-                            startActivity(intent);
-                            mHandler.post(() -> finish());
+                            runOnUiThread(() -> {
+                                Intent intent = new Intent(this, HomeActivity.class);
+                                startActivity(intent);
+                                finish();
+                            });
                         }
 
                     }
-                    catch(UnAuthorizedException e) {
-                        mHandler.post(() -> {
+                    catch(UnAuthorizedException | IOException | JSONException e) {
+                        runOnUiThread(() -> {
                             Toast.makeText(MainActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
                             btnLogin.setEnabled(true);
                             btnLogin.setText(getString(R.string.login));
                         });
                     }
-                    catch (IOException | JSONException e) {
-                        mHandler.post(() -> {
-                            btnLogin.setEnabled(true);
-                            btnLogin.setText(getString(R.string.login));
+                    catch (NoInternetException e) {
+                        runOnUiThread(() -> {
+                            Intent intent = new Intent(MainActivity.this, NoInternetActivity.class);
+                            startActivity(intent);
                         });
-                        Log.d(TAG, "while sending request: " + e.getMessage());
                     }
                 });
             }
