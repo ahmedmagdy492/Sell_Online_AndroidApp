@@ -1,7 +1,6 @@
 package com.magdyradwan.sellonline.repository;
 
-import com.magdyradwan.sellonline.HttpClient;
-import com.magdyradwan.sellonline.exceptions.NoInternetException;
+import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.irepository.INotificationRepo;
 import com.magdyradwan.sellonline.jsonreaders.NotificationJsonReader;

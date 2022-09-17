@@ -20,8 +20,8 @@ import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.fragments.MyPostsFragment;
 import com.magdyradwan.sellonline.fragments.PostsFragment;
 import com.magdyradwan.sellonline.fragments.ProfileFragment;
+import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.irepository.IUsersRepo;
-import com.magdyradwan.sellonline.jsonreaders.ProfileJsonReader;
 import com.magdyradwan.sellonline.repository.UsersRepo;
 import com.magdyradwan.sellonline.responsemodels.ProfileResponseModel;
 

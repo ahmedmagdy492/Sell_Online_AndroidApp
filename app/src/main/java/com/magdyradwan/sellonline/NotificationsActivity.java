@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -16,8 +15,8 @@ import android.widget.Toast;
 import com.magdyradwan.sellonline.adapters.NotificationAdapter;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
+import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.irepository.INotificationRepo;
-import com.magdyradwan.sellonline.jsonreaders.NotificationJsonReader;
 import com.magdyradwan.sellonline.repository.NotificationRepo;
 import com.magdyradwan.sellonline.responsemodels.NotificationResponseModel;
 

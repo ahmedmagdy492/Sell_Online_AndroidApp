@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.magdyradwan.sellonline.adapters.PostsAdapter;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
+import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.jsonreaders.PostsJsonReader;
 import com.magdyradwan.sellonline.responsemodels.PostResponseModel;
 

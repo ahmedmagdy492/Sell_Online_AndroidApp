@@ -1,10 +1,11 @@
-package com.magdyradwan.sellonline;
+package com.magdyradwan.sellonline.helpers;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.util.Log;
 
+import com.magdyradwan.sellonline.R;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.helpers.NetworkConnectionChecker;
@@ -45,6 +46,8 @@ public class HttpClient {
                 _sharedPreferences.getString("token", ""));
         httpURLConnection.setRequestMethod("GET");
         httpURLConnection.connect();
+
+        Log.d("TAG", "getRequest: " + httpURLConnection.getResponseCode());
 
         if(httpURLConnection.getResponseCode() == 401)
             throw new UnAuthorizedException("UnAuthorized");

@@ -28,6 +28,7 @@ import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.fragments.WarningDialogFragment;
 import com.magdyradwan.sellonline.helpers.Base64Converter;
+import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.jsonreaders.CategoryListJsonReader;
 import com.magdyradwan.sellonline.jsonreaders.PostDetailsJsonReader;
 import com.magdyradwan.sellonline.jsonreaders.PostImageJSONReader;

@@ -23,10 +23,9 @@ import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.helpers.Base64Converter;
 import com.magdyradwan.sellonline.helpers.FileReaderHelper;
+import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.irepository.ILookupRepo;
 import com.magdyradwan.sellonline.irepository.IPostsRepo;
-import com.magdyradwan.sellonline.jsonreaders.CategoryListJsonReader;
-import com.magdyradwan.sellonline.jsonreaders.CreatePostJsonReader;
 import com.magdyradwan.sellonline.models.CreatePostModel;
 import com.magdyradwan.sellonline.models.UploadImageModel;
 import com.magdyradwan.sellonline.repository.LookupRepo;
@@ -142,6 +141,7 @@ public class CreatePostActivity extends AppCompatActivity {
 
         btnSave.setOnClickListener(v -> {
             if(validateInputs()) {
+                btnSave.setEnabled(false);
 
                 TextView categoryId = categoryList.getSelectedView().findViewById(R.id.category_id_spinner);
                 CreatePostModel postModel = new CreatePostModel(
@@ -167,10 +167,11 @@ public class CreatePostActivity extends AppCompatActivity {
                             if(images.size() > 3) {
                                 runOnUiThread(() -> {
                                     Toast.makeText(this, "Post Cannot have more than 3 images", Toast.LENGTH_SHORT).show();
+                                    btnSave.setEnabled(true);
                                 });
                             }
                             else {
-                                // TODO: iterate over images and upload it
+                                // iterate over images and upload it
                                 for(ImageUploadDTO img : images) {
                                     String imgAsBase64 = Base64Converter.convertFromByteArrToBase64(
                                             FileReaderHelper.readUri(CreatePostActivity.this,
@@ -185,6 +186,7 @@ public class CreatePostActivity extends AppCompatActivity {
                                 }
 
                                 runOnUiThread(() -> {
+                                    btnSave.setEnabled(true);
                                     Toast.makeText(this, "Post has been Created Successfully", Toast.LENGTH_SHORT).show();
                                     this.finish();
                                 });

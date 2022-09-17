@@ -1,5 +1,7 @@
 package com.magdyradwan.sellonline.adapters;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -16,6 +19,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.magdyradwan.sellonline.R;
 import com.magdyradwan.sellonline.models.MessageModel;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecyclerAdapter.MessageViewHolder> {
@@ -46,9 +55,16 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
         RelativeLayout.LayoutParams relativeParams = (RelativeLayout.LayoutParams)
                 holder.message_container.getLayoutParams();
 
+        holder.message_container.setOnLongClickListener(v -> {
+            ClipboardManager clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            ClipData clip = ClipData.newPlainText("message", holder.content.getText().toString());
+            clipboardManager.setPrimaryClip(clip);
+            Toast.makeText(context, "Message Copied", Toast.LENGTH_SHORT).show();
+            return true;
+        });
+
         if(msg.getSenderID().equals(userId))
         {
-            Log.d("TAG", "onBindViewHolder: sender = userid");
             relativeParams.removeRule(RelativeLayout.ALIGN_PARENT_END);
             relativeParams.removeRule(RelativeLayout.ALIGN_PARENT_START);
             relativeParams.addRule(RelativeLayout.ALIGN_PARENT_END);
@@ -73,12 +89,14 @@ public class MessageRecyclerAdapter extends RecyclerView.Adapter<MessageRecycler
 
         private final TextView content;
         private final CardView message_container;
+        //private final TextView msgDate;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
 
             content = itemView.findViewById(R.id.message_content);
             message_container = itemView.findViewById(R.id.message_container);
+            //msgDate = itemView.findViewById(R.id.msg_date);
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.magdyradwan.sellonline.repository;
 
-import com.magdyradwan.sellonline.HttpClient;
+import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.irepository.IAuthRepo;
 import com.magdyradwan.sellonline.jsonreaders.LoginJsonReader;

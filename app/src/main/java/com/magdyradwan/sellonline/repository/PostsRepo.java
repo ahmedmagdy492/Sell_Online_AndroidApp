@@ -1,11 +1,6 @@
 package com.magdyradwan.sellonline.repository;
 
-import android.widget.TextView;
-
-import com.magdyradwan.sellonline.CreatePostActivity;
-import com.magdyradwan.sellonline.HttpClient;
-import com.magdyradwan.sellonline.R;
-import com.magdyradwan.sellonline.exceptions.NoInternetException;
+import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.irepository.IPostsRepo;
 import com.magdyradwan.sellonline.jsonreaders.CreatePostJsonReader;

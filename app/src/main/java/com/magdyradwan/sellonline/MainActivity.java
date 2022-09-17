@@ -1,14 +1,11 @@
 package com.magdyradwan.sellonline;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
@@ -18,9 +15,9 @@ import android.widget.Toast;
 
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
+import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.helpers.NetworkConnectionChecker;
 import com.magdyradwan.sellonline.irepository.IAuthRepo;
-import com.magdyradwan.sellonline.jsonreaders.LoginJsonReader;
 import com.magdyradwan.sellonline.repository.AuthRepo;
 import com.magdyradwan.sellonline.responsemodels.LoginResponseModel;
 import com.magdyradwan.sellonline.viewmodels.LoginViewModel;

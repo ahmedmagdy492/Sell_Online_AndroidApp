@@ -22,10 +22,10 @@ public class MessagesJsonReader implements IJsonReader<List<MessageModel>> {
             String id = cur.getString("id");
             String content = cur.getString("content");
             String sentDate = cur.getString("sentDate");
-            String chatID = cur.getString("chatID");
             boolean seen = cur.getBoolean("seen");
             String senderId = cur.getString("senderID");
             String receiverId = cur.getString("receiverID");
+            String chatID = cur.getString("chatID");
 
             msgs.add(new MessageModel(id, content, sentDate, chatID, senderId, receiverId, seen));
         }

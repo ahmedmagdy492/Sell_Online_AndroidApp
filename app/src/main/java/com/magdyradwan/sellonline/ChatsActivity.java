@@ -11,8 +11,8 @@ import android.widget.Toast;
 import com.magdyradwan.sellonline.adapters.ChatsAdapter;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
+import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.irepository.IChatsRepo;
-import com.magdyradwan.sellonline.jsonreaders.ChatJsonReader;
 import com.magdyradwan.sellonline.models.ChatModel;
 import com.magdyradwan.sellonline.repository.ChatsRepo;
 

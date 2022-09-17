@@ -15,14 +15,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import com.magdyradwan.sellonline.HttpClient;
+import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.NoInternetActivity;
 import com.magdyradwan.sellonline.R;
 import com.magdyradwan.sellonline.adapters.MyPostsAdapter;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.irepository.IPostsRepo;
-import com.magdyradwan.sellonline.jsonreaders.PostsJsonReader;
 import com.magdyradwan.sellonline.repository.PostsRepo;
 import com.magdyradwan.sellonline.responsemodels.PostResponseModel;
 
