@@ -2,6 +2,7 @@ package com.magdyradwan.sellonline;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
@@ -35,7 +36,6 @@ import java.util.concurrent.Executors;
 public class HomeActivity extends AppCompatActivity {
 
     private static final String TAG = "HomeActivity";
-    private Handler mHandler;
     private FloatingActionButton fab_createPost;
 
     private void onBottomNavigationSelected() {
@@ -59,7 +59,7 @@ public class HomeActivity extends AppCompatActivity {
                             phoneNumbers.add(profileResponseModel.getPhoneNumbers().get(i).getPhoneNumber());
                         }
 
-                        mHandler.post(() -> {
+                        runOnUiThread(() -> {
                             ProfileFragment profileFragment = ProfileFragment.newInstance(
                                     profileResponseModel.getDisplayName(),
                                     profileResponseModel.getEmail(),
@@ -158,8 +158,6 @@ public class HomeActivity extends AppCompatActivity {
             Intent intent = new Intent(this, CreatePostActivity.class);
             startActivity(intent);
         });
-
-        mHandler = new Handler(getMainLooper());
 
         onBottomNavigationSelected();
     }

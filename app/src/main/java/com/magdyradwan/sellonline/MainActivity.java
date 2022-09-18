@@ -59,6 +59,12 @@ public class MainActivity extends AppCompatActivity {
             return;
         }
 
+        Button register_btn = findViewById(R.id.register_btn);
+        register_btn.setOnClickListener(v -> {
+            Intent intent = new Intent(this, RegisterActivity.class);
+            startActivity(intent);
+        });
+
         ExecutorService service = Executors.newSingleThreadExecutor();
         service.execute(() -> {
             try {

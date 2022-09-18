@@ -12,7 +12,9 @@ import android.widget.Toast;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.helpers.HttpClient;
+import com.magdyradwan.sellonline.irepository.IUsersRepo;
 import com.magdyradwan.sellonline.models.ChangePasswordModel;
+import com.magdyradwan.sellonline.repository.UsersRepo;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -49,14 +51,6 @@ public class ChangePasswordActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean changePassword(ChangePasswordModel model) throws IOException, NoInternetException, UnAuthorizedException {
-        HttpClient httpClient = new HttpClient(ChangePasswordActivity.this,
-                getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
-
-        httpClient.postRequest("Auth/ChangePassword", model.convertToJson());
-        return true;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,14 +76,22 @@ public class ChangePasswordActivity extends AppCompatActivity {
 
                 // confirm changing the password
                 executorService.execute(() -> {
+
                     boolean result = false;
                     try {
-                        result = changePassword(changePasswordModel);
-                    } catch (IOException | UnAuthorizedException e) {
+                        HttpClient httpClient = new HttpClient(ChangePasswordActivity.this,
+                                getSharedPreferences(getString(R.string.preference_key), MODE_PRIVATE));
+
+                        IUsersRepo usersRepo = new UsersRepo(httpClient);
+
+                        result = usersRepo.changePassword(changePasswordModel);
+                    }
+                    catch (IOException | UnAuthorizedException e) {
                         runOnUiThread(() -> {
                             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
                         });
-                    } catch (NoInternetException e) {
+                    }
+                    catch (NoInternetException e) {
                         runOnUiThread(() -> {
                             Intent intent = new Intent(ChangePasswordActivity.this, NoInternetActivity.class);
                             startActivity(intent);

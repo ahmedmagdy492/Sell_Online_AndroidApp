@@ -65,4 +65,10 @@ public class PostsRepo implements IPostsRepo {
         httpClient.postRequest("Posts/Images/Upload", json);
         return true;
     }
+
+    public ArrayList<PostResponseModel> getPostsByCategoryID(long categoryId, int pageNo, int pageSize) throws IOException, UnAuthorizedException, JSONException {
+        String json = httpClient.getRequest("Posts/Category?categoryId=" + categoryId + "&pageNo=" + pageNo + "&pageSize=" + pageSize);
+        PostsJsonReader postsJsonReader = new PostsJsonReader();
+        return postsJsonReader.readJson(json);
+    }
 }

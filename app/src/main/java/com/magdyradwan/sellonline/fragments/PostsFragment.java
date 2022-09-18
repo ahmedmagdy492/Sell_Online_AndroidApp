@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.magdyradwan.sellonline.helpers.HttpClient;
@@ -45,12 +45,12 @@ public class PostsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View holder = inflater.inflate(R.layout.fragment_posts, container, false);
-        ProgressBar loader = holder.findViewById(R.id.posts_loader);
+        RelativeLayout loader = holder.findViewById(R.id.posts_loader);
 
         RecyclerView postsList = holder.findViewById(R.id.posts_list);
         postsList.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        ExecutorService executorService = Executors.newFixedThreadPool(3);
         executorService.execute(() -> {
             try {
                 HttpClient httpClient = new HttpClient(getActivity(), getActivity().getSharedPreferences(

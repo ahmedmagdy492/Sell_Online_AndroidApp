@@ -47,8 +47,6 @@ public class HttpClient {
         httpURLConnection.setRequestMethod("GET");
         httpURLConnection.connect();
 
-        Log.d("TAG", "getRequest: " + httpURLConnection.getResponseCode());
-
         if(httpURLConnection.getResponseCode() == 401)
             throw new UnAuthorizedException("UnAuthorized");
         if(httpURLConnection.getResponseCode() != 200)

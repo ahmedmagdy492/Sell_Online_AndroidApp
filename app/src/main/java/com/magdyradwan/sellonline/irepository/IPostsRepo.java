@@ -19,4 +19,5 @@ public interface IPostsRepo {
     ArrayList<PostResponseModel> getMyPosts(int pageNo, int pageSize) throws JSONException, IOException, UnAuthorizedException;
     String createPost(CreatePostModel model) throws IOException, UnAuthorizedException, JSONException;
     boolean uploadImagesToPost(UploadImageModel model) throws IOException, UnAuthorizedException;
+    ArrayList<PostResponseModel> getPostsByCategoryID(long categoryId, int pageNo, int pageSize) throws IOException, UnAuthorizedException, JSONException;
 }
