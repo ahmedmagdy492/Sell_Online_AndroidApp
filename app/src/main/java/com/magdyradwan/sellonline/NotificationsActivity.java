@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -63,7 +64,7 @@ public class NotificationsActivity extends AppCompatActivity {
                 List<NotificationResponseModel> notifications = notificationRepo.getMyNotifications();
 
                 runOnUiThread(() -> {
-                    LinearLayout txt = findViewById(R.id.empty_view);
+                    ImageView txt = findViewById(R.id.empty_view);
 
                     noti_loader.setVisibility(View.GONE);
                     if(notifications.size() == 0) {

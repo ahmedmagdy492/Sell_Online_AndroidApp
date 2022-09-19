@@ -185,6 +185,8 @@ public class RegisterActivity extends AppCompatActivity {
         Button btnSubmit = findViewById(R.id.btn_create_account);
         btnSubmit.setOnClickListener(v -> {
            if(validateInput()) {
+               btnSubmit.setEnabled(false);
+               btnSubmit.setText(getString(R.string.loading));
                try {
                    RegisterViewModel model = mapToModel();
                    ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -203,7 +205,11 @@ public class RegisterActivity extends AppCompatActivity {
                            });
                        }
                        catch (IOException | UnAuthorizedException | JSONException e) {
-                           runOnUiThread(() -> Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());
+                           runOnUiThread(() -> {
+                               Toast.makeText(RegisterActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                               btnSubmit.setEnabled(true);
+                               btnSubmit.setText(getString(R.string.create_new_account));
+                           });
                        }
                        catch (NoInternetException e) {
                            runOnUiThread(() -> {
@@ -215,6 +221,8 @@ public class RegisterActivity extends AppCompatActivity {
                }
                catch (IOException e) {
                    Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                   btnSubmit.setEnabled(true);
+                   btnSubmit.setText(getString(R.string.create_new_account));
                }
            }
         });

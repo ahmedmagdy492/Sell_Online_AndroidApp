@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -55,21 +57,28 @@ public class ChatsActivity extends AppCompatActivity {
                 List<ChatModel> chats = chatsRepo.getChatsOfUser();
 
                 runOnUiThread(() -> {
-                    ChatsAdapter chatsAdapter = new ChatsAdapter(ChatsActivity.this, R.layout.chat_item, chats);
-                    chat_list.setAdapter(chatsAdapter);
+                    if(chats.size() > 0)
+                    {
+                        ChatsAdapter chatsAdapter = new ChatsAdapter(ChatsActivity.this, R.layout.chat_item, chats);
+                        chat_list.setAdapter(chatsAdapter);
 
-                    chat_list.setOnItemClickListener((parent, view, position, id) -> {
-                        Intent intent = new Intent(ChatsActivity.this, MessagesActivity.class);
-                        intent.putExtra("chatId", chats.get(position).getChatID());
-                        if(chats.get(position).getReceiverID().equals(userId))
-                        {
-                            intent.putExtra("receiverId", chats.get(position).getSenderID());
-                        }
-                        else {
-                            intent.putExtra("receiverId", chats.get(position).getReceiverID());
-                        }
-                        startActivity(intent);
-                    });
+                        chat_list.setOnItemClickListener((parent, view, position, id) -> {
+                            Intent intent = new Intent(ChatsActivity.this, MessagesActivity.class);
+                            intent.putExtra("chatId", chats.get(position).getChatID());
+                            if(chats.get(position).getReceiverID().equals(userId))
+                            {
+                                intent.putExtra("receiverId", chats.get(position).getSenderID());
+                            }
+                            else {
+                                intent.putExtra("receiverId", chats.get(position).getReceiverID());
+                            }
+                            startActivity(intent);
+                        });
+                    }
+                    else {
+                        ImageView emptyView = findViewById(R.id.no_chats);
+                        emptyView.setVisibility(View.VISIBLE);
+                    }
                 });
             }
             catch (IOException | UnAuthorizedException | JSONException e) {

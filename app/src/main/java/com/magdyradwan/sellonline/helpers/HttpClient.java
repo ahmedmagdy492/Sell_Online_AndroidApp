@@ -77,6 +77,7 @@ public class HttpClient {
         HttpURLConnection httpURLConnection = (HttpURLConnection) new URL(builder.toString())
                 .openConnection();
 
+        httpURLConnection.setReadTimeout(1000);
         httpURLConnection.setDoOutput(true);
         httpURLConnection.setRequestMethod("POST");
         httpURLConnection.setRequestProperty("Content-Type", "application/json");
@@ -91,20 +92,22 @@ public class HttpClient {
         out.flush();
         out.close();
 
-        Log.d("HttpClient", "post body: ");
-
         httpURLConnection.connect();
 
-        Log.d("HttpClient", "after connection: " +
-                httpURLConnection.getResponseCode());
-
         if(httpURLConnection.getResponseCode() == 401) {
-            throw new UnAuthorizedException("Invalid Email or Password");
+            throw new UnAuthorizedException("Your Session has expired Please login");
         }
 
         if(!String.valueOf(httpURLConnection.getResponseCode()).startsWith("2")) {
-            String response = readFromInputStream(httpURLConnection.getInputStream());
-            Log.d("HttpClient", "postRequest: " + response);
+            String response = "";
+            try
+            {
+                response = readFromInputStream(httpURLConnection.getInputStream());
+            }
+            catch (IOException e) {
+                throw new IOException("Server returned: " + httpURLConnection.getResponseCode());
+            }
+
             throw new IOException(response);
         }
 

@@ -1,5 +1,8 @@
 package com.magdyradwan.sellonline.repository;
 
+import com.magdyradwan.sellonline.R;
+import com.magdyradwan.sellonline.SearchActivity;
+import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.helpers.HttpClient;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.irepository.IPostsRepo;
@@ -70,5 +73,11 @@ public class PostsRepo implements IPostsRepo {
         String json = httpClient.getRequest("Posts/Category?categoryId=" + categoryId + "&pageNo=" + pageNo + "&pageSize=" + pageSize);
         PostsJsonReader postsJsonReader = new PostsJsonReader();
         return postsJsonReader.readJson(json);
+    }
+
+    public ArrayList<PostResponseModel> searchPosts(String query) throws IOException, UnAuthorizedException, JSONException {
+        String response = httpClient.getRequest("Posts/Search?query=" + query);
+        PostsJsonReader postsJsonReader = new PostsJsonReader();
+        return postsJsonReader.readJson(response);
     }
 }

@@ -72,7 +72,6 @@ public class HomeActivity extends AppCompatActivity {
                             getSupportFragmentManager()
                                     .beginTransaction()
                                     .replace(R.id.profile_container, profileFragment)
-                                    .addToBackStack(null)
                                     .commit();
                             fab_createPost.setVisibility(View.GONE);
                         });
@@ -92,7 +91,6 @@ public class HomeActivity extends AppCompatActivity {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.profile_container, new PostsFragment())
-                        .addToBackStack(null)
                         .commit();
                 fab_createPost.setVisibility(View.VISIBLE);
             }
@@ -100,7 +98,6 @@ public class HomeActivity extends AppCompatActivity {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.profile_container, new MyPostsFragment())
-                        .addToBackStack(null)
                         .commit();
                 fab_createPost.setVisibility(View.VISIBLE);
             }
@@ -160,5 +157,11 @@ public class HomeActivity extends AppCompatActivity {
         });
 
         onBottomNavigationSelected();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.finishAffinity();
     }
 }

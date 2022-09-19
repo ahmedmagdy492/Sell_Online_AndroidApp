@@ -41,7 +41,12 @@ public class ProfileAdapter extends ArrayAdapter<ProfileOptionDTO> {
         TextView optionName = convertView.findViewById(R.id.option_name);
         TextView title = convertView.findViewById(R.id.txt_title);
         title.setText(current.getTitle());
-        optionName.setText(current.getItemName());
+        if(current.getItemName() == null || current.getItemName().equals("null")) {
+            optionName.setText("N/A");
+        }
+        else {
+            optionName.setText(current.getItemName());
+        }
         return convertView;
     }
 

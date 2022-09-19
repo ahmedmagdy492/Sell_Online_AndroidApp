@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/send_msg"
-        android:icon="@drawable/ic_baseline_send_24"
+        android:icon="@drawable/ic_baseline_message_24"
         app:showAsAction="always"
         android:title="@string/send_message"/>
 </menu>

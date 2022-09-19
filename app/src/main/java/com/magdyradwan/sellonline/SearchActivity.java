@@ -8,13 +8,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.magdyradwan.sellonline.adapters.PostsAdapter;
 import com.magdyradwan.sellonline.exceptions.NoInternetException;
 import com.magdyradwan.sellonline.exceptions.UnAuthorizedException;
 import com.magdyradwan.sellonline.helpers.HttpClient;
+import com.magdyradwan.sellonline.irepository.IPostsRepo;
 import com.magdyradwan.sellonline.jsonreaders.PostsJsonReader;
+import com.magdyradwan.sellonline.repository.PostsRepo;
 import com.magdyradwan.sellonline.responsemodels.PostResponseModel;
 
 import org.json.JSONException;
@@ -27,17 +31,6 @@ import java.util.concurrent.Executors;
 public class SearchActivity extends AppCompatActivity {
 
     private RecyclerView recView;
-
-    private ArrayList<PostResponseModel> searchPosts(String query) throws IOException, NoInternetException, UnAuthorizedException, JSONException {
-        HttpClient httpClient = new HttpClient(
-                SearchActivity.this, getSharedPreferences(
-                        getString(R.string.preference_key),MODE_PRIVATE)
-        );
-
-        String response = httpClient.getRequest("Posts/Search?query=" + query);
-        PostsJsonReader postsJsonReader = new PostsJsonReader();
-        return postsJsonReader.readJson(response);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,11 +56,27 @@ public class SearchActivity extends AppCompatActivity {
         ExecutorService executorService = Executors.newSingleThreadExecutor();
         executorService.execute(() -> {
             try {
-                ArrayList<PostResponseModel> posts = searchPosts(query);
-                runOnUiThread(() -> {
-                    recView.setAdapter(new PostsAdapter(SearchActivity.this, posts));
-                    recView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
-                });
+                HttpClient httpClient = new HttpClient(
+                        SearchActivity.this, getSharedPreferences(
+                        getString(R.string.preference_key),MODE_PRIVATE)
+                );
+
+                IPostsRepo postsRepo = new PostsRepo(httpClient);
+
+                ArrayList<PostResponseModel> posts = postsRepo.searchPosts(query);
+
+                if(posts.size() > 0) {
+                    runOnUiThread(() -> {
+                        recView.setAdapter(new PostsAdapter(SearchActivity.this, posts));
+                        recView.setLayoutManager(new LinearLayoutManager(SearchActivity.this));
+                    });
+                }
+                else {
+                    runOnUiThread(() -> {
+                        ImageView imageView = findViewById(R.id.no_results);
+                        imageView.setVisibility(View.VISIBLE);
+                    });
+                }
             }
             catch (IOException | UnAuthorizedException | JSONException e) {
                 runOnUiThread(() -> Toast.makeText(SearchActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show());

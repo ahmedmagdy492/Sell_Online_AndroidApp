@@ -50,5 +50,7 @@
     <string name="country">Country</string>
     <string name="district">District</string>
     <string name="phone_number">Phone Number</string>
+    <string name="images">Images</string>
+    <string name="choose_image">Choose Image</string>
     <!--    <string name="api_url" translatable="false">http://localhost:7283/v1/</string>-->
 </resources>

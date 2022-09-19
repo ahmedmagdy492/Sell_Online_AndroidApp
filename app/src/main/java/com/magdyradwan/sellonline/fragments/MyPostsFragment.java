@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -69,7 +70,14 @@ public class MyPostsFragment extends Fragment {
 
                 getActivity().runOnUiThread(() -> {
                     loader.setVisibility(View.GONE);
-                    my_posts_list.setAdapter(new MyPostsAdapter(getActivity(), myPosts));
+
+                    if(myPosts.size() > 0) {
+                        my_posts_list.setAdapter(new MyPostsAdapter(getActivity(), myPosts));
+                    }
+                    else {
+                        ImageView img = inflatedView.findViewById(R.id.no_data_img);
+                        img.setVisibility(View.VISIBLE);
+                    }
                 });
 
             } catch (IOException | UnAuthorizedException | JSONException e) {

@@ -12,19 +12,30 @@
         android:background="@color/white"
         android:layout_height="wrap_content">
 
-        <ImageView
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:src="@drawable/profile"
+        <androidx.cardview.widget.CardView
             android:layout_margin="10dp"
             android:layout_gravity="center"
-            android:id="@+id/profile_img"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="50dp">
+
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/profile"
+                android:id="@+id/profile_img"/>
+
+        </androidx.cardview.widget.CardView>
 
         <Button
             android:id="@+id/upload_profile_img"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/upload_image"
+            android:text="@string/choose_image"
+            android:textAllCaps="false"
+            android:background="@color/black"
+            android:textColor="@color/white"
+            android:padding="10dp"
             android:layout_gravity="center"/>
 
         <EditText
@@ -90,6 +101,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:background="@color/black"
+            android:textColor="@color/white"
             android:id="@+id/btn_create_account"
             android:text="@string/create_new_account"/>
 

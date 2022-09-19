@@ -202,11 +202,13 @@ public class CreatePostActivity extends AppCompatActivity {
                         Log.d(TAG, "onCreate: exceptions: " + e.getMessage());
                         runOnUiThread(() -> {
                             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            btnSave.setEnabled(true);
                         });
                     } catch (NoInternetException e) {
                         runOnUiThread(() -> {
                             Intent intent = new Intent(CreatePostActivity.this, NoInternetActivity.class);
                             startActivity(intent);
+                            btnSave.setEnabled(true);
                         });
                     }
                 });
